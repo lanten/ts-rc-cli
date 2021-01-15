@@ -69,26 +69,26 @@ export interface TemplateConfigJSON {
 // -------------------------------------------------------------------------
 
 // // DEBUG
-// checkBaseInfo()
-//   .then(() => {
-//     getCreateConfig()
-//   })
-//   .catch((message) => {
-//     exConsole.warn(message || '配置异常!')
-//   })
+checkBaseInfo()
+  .then(() => {
+    getCreateConfig()
+  })
+  .catch((message) => {
+    exConsole.warn(message || '配置异常!')
+  })
 
 // test // DEBUG
-createTemplate({
-  CLI_PACKAGE_NAME: '@sbc-fe/react-ts-cli',
-  PROJECT_NAME: 'asd',
-  PROJECT_TITLE: 'asd',
-  USE_REDUX: 0,
-  USE_CENTRALIZED_API: 0,
-  USE_GLOBAL_TOOLS: 0,
-  USE_REACT_ROUTER: 1,
-  USE_ANTD: 1,
-  USE_LESS: 1,
-})
+// createTemplate({
+//   CLI_PACKAGE_NAME: 'ts-rc-cli',
+//   PROJECT_NAME: 'asd',
+//   PROJECT_TITLE: 'asd',
+//   USE_REDUX: 0,
+//   USE_CENTRALIZED_API: 0,
+//   USE_GLOBAL_TOOLS: 0,
+//   USE_REACT_ROUTER: 1,
+//   USE_ANTD: 1,
+//   USE_LESS: 1,
+// })
 
 /** 必填项验证 */
 function requiredValidate(input: string) {

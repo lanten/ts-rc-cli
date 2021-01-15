@@ -1,5 +1,5 @@
 {
-  "name": "rc-ts-cli",
+  "name": "ts-rc-cli",
   "version": "0.0.1-alpha.0",
   "description": "React + Typescript Web 项目脚手架",
   "main": "dist/index.js",
@@ -8,20 +8,20 @@
     "pu": "npm publish --access=public",
     "prepare": "npm run build:pkg",
     "build:pkg": "rm -rf ./dist && tsc -p ./tsconfig.json -d",
-    "build:demo": "npm run build:pkg && node bin/react-ts-build.js",
+    "build:demo": "npm run build:pkg && node bin/ts-rc-build.js",
     "test": "npm run build:pkg && node bin/index.js",
     "get-config": "npm run build:pkg && node dist/config/get-config.js"
   },
   "bin": {
-    "react-ts": "./bin/index.js",
-    "react-ts-create": "./bin/react-ts-create.js",
-    "react-ts-dev": "./bin/react-ts-dev.js",
-    "react-ts-build": "./bin/react-ts-build.js"
+    "ts-rc": "./bin/index.js",
+    "ts-rc-create": "./bin/ts-rc-create.js",
+    "ts-rc-dev": "./bin/ts-rc-dev.js",
+    "ts-rc-build": "./bin/ts-rc-build.js"
   },
   "files": [
     "bin",
     "types",
-    "react-ts-template",
+    "ts-rc-template",
     "dist",
     "package.json",
     "README.md",
@@ -81,12 +81,12 @@
   "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lanten/react-ts-cli.git"
+    "url": "git+https://github.com/lanten/ts-rc-cli.git"
   },
   "author": "lanten",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/lanten/react-ts-cli/issues"
+    "url": "https://github.com/lanten/ts-rc-cli/issues"
   },
-  "homepage": "https://github.com/lanten/react-ts-cli#readme"
+  "homepage": "https://github.com/lanten/ts-rc-cli#readme"
 }

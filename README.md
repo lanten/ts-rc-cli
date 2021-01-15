@@ -1,12 +1,13 @@
-# react-ts-cli
+# ts-rc-cli
 
 
 ### 命令行工具
 
-| 命令           | 说明         | 参数   |
-| -------------- | ------------ | ------ |
-| react-ts-dev   | 启动本地服务 | ...env |
-| react-ts-build | 执行编译脚本 | ...env |
+| 命令        | 说明         | 参数                                  |
+| ----------- | ------------ | ------------------------------------- |
+| ts-rc       | 启动本地服务 | 'dev'  \| 'build' \| 'create', ...env |
+| ts-rc-dev   | 启动本地服务 | ...env                                |
+| ts-rc-build | 执行编译脚本 | ...env                                |
 
 
 ### 配置
@@ -16,7 +17,7 @@
 chestnut:
 ```ts
 import path from 'path'
-import { ReactTsConfigPartial } from '@sbc-fe/react-ts-cli'
+import { ReactTsConfigPartial } from 'ts-rc-cli'
 
 const rootPath = process.cwd()
 
@@ -77,12 +78,12 @@ chestnut:
 
 启动 dev-server:
 ```
-react-ts-dev
+ts-rc-dev
 ```
 
 编译:
 ```
-react-ts-build
+ts-rc-build
 ```
 
 脚本将自动读取 `config` 下的配置文件
@@ -90,8 +91,8 @@ react-ts-build
 
 整合了 `cross-env`, 可以直接添加环境变量:
 ```
-react-ts-dev MY_ENV=xxx
-react-ts-build MY_ENV=xxx
+ts-rc-dev MY_ENV=xxx
+ts-rc-build MY_ENV=xxx
 ```
 
 ## 默认配置
