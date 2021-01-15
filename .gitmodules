@@ -1,0 +1,3 @@
+[submodule "react-ts-template"]
+	path = react-ts-template
+	url = https://github.com/lanten/react-ts-template.git
