@@ -68,7 +68,6 @@ export interface TemplateConfigJSON {
 
 // -------------------------------------------------------------------------
 
-// // DEBUG
 checkBaseInfo()
   .then(() => {
     getCreateConfig()
@@ -188,13 +187,15 @@ async function checkBaseInfo() {
 
   console.log(startToolTips.join('\n'))
 
-  return inquirer.prompt({ name: 'next', type: 'confirm', message: '确认信息' }).then((val) => {
-    if (val && val.next) {
-      return true
-    } else {
-      return Promise.reject(false)
-    }
-  })
+  return true
+
+  // return inquirer.prompt({ name: 'next', type: 'confirm', message: '确认信息' }).then((val) => {
+  //   if (val && val.next) {
+  //     return true
+  //   } else {
+  //     return Promise.reject(false)
+  //   }
+  // })
 }
 
 /** 获取创建目录 */
