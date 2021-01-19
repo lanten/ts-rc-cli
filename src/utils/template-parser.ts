@@ -19,7 +19,6 @@ export function replaceTemplate<T = any>(data: string, config: T): string {
     if (ifCondition == 'false') ifCondition = false
     if (ifCondition == 'true') ifCondition = true
 
-    // console.log('---if---', { str, $1, $2, ifKey, ifCondition })
     if (config[ifKey] == ifCondition) {
       return $2.replace(/\\n/, '\n')
     } else {
@@ -28,7 +27,6 @@ export function replaceTemplate<T = any>(data: string, config: T): string {
   })
 
   resStr = resStr.replace(/<var>(.*?)<\/var>/g, (str, $1) => {
-    // console.log('---var---', str, $1)
     return config[$1]
   })
 

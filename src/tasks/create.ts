@@ -18,12 +18,8 @@ const packageJSON = require(path.resolve(__dirname, '../../package.json'))
 export type PreInstalls =
   /** 是否集成 Redux ($store) */
   | 'USE_REDUX'
-  /** 是否启用集中管理 HTTP 请求 ($api) */
-  | 'USE_CENTRALIZED_API'
-  /** 是否启用全局工具模块 ($tools) */
-  | 'USE_GLOBAL_TOOLS'
-  /** 是否集成 react-router 及相关路由模块 */
-  | 'USE_REACT_ROUTER'
+  /** 是否启用 Axios ($api) */
+  | 'USE_AXIOS'
   /** 是否集成 Ant-Design 及定制主体配置 (将强制启用 less) */
   | 'USE_ANTD'
 
@@ -48,12 +44,8 @@ export interface TemplateConfig extends Pick<CreateConfig, 'PROJECT_NAME' | 'PRO
   CLI_PACKAGE_NAME: string
   /** 是否集成 Redux ($store) */
   USE_REDUX?: 0 | 1
-  /** 是否启用集中管理 HTTP 请求 ($api) */
-  USE_CENTRALIZED_API?: 0 | 1
-  /** 是否启用全局工具模块 ($tools) */
-  USE_GLOBAL_TOOLS?: 0 | 1
-  /** 是否集成 react-router 及相关路由模块 */
-  USE_REACT_ROUTER?: 0 | 1
+  /** 是否启用 Axios ($api) */
+  USE_AXIOS?: 0 | 1
   /** 是否集成 Ant-Design 及定制主体配置 (将强制启用 less) */
   USE_ANTD?: 0 | 1
   /** 使用 less */
@@ -82,7 +74,7 @@ checkBaseInfo()
 //   PROJECT_NAME: 'asd',
 //   PROJECT_TITLE: 'asd',
 //   USE_REDUX: 0,
-//   USE_CENTRALIZED_API: 0,
+//   USE_AXIOS: 0,
 //   USE_GLOBAL_TOOLS: 0,
 //   USE_REACT_ROUTER: 1,
 //   USE_ANTD: 1,
@@ -114,12 +106,18 @@ async function getCreateConfig() {
         type: 'checkbox',
         name: 'preInstalls',
         message: '选择需要预装的功能',
-        default: ['USE_REDUX', 'USE_CENTRALIZED_API', 'USE_GLOBAL_TOOLS', 'USE_REACT_ROUTER'] as PreInstalls[],
+        default: [
+          'USE_REDUX',
+          'USE_AXIOS',
+          'USE_GLOBAL_TOOLS',
+          'USE_REACT_ROUTER',
+          'USE_ANTD',
+        ] as PreInstalls[],
         choices: [
           { value: 'USE_REDUX', name: '集成 Redux ($store)' },
-          { value: 'USE_CENTRALIZED_API', name: '启用集中管理 HTTP 请求 ($api)' },
-          { value: 'USE_GLOBAL_TOOLS', name: '启用全局工具模块 ($tools)' },
-          { value: 'USE_REACT_ROUTER', name: '集成 react-router 及相关路由模块' },
+          { value: 'USE_AXIOS', name: '是否启用 Axios ($api)' },
+          // { value: 'USE_GLOBAL_TOOLS', name: '启用全局工具模块 ($tools)' },
+          // { value: 'USE_REACT_ROUTER', name: '集成 react-router 及相关路由模块' },
           { value: 'USE_ANTD', name: '集成 Ant-Design 及定制主体配置 (将强制启用 less)' },
         ] as {
           value: PreInstalls
@@ -130,7 +128,7 @@ async function getCreateConfig() {
         type: 'list',
         name: 'styleHandler',
         message: '选择 css 预处理器',
-        default: 'none' as StyleHandlers,
+        default: 'less' as StyleHandlers,
         choices: [{ value: 'less' }, { value: 'scss' }, { value: 'none' }] as { value: StyleHandlers }[],
         when: (e) => !e.preInstalls.includes('USE_ANTD'),
       },
