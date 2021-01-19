@@ -313,7 +313,7 @@ function copyTemplateFile(filePath: string, newPath: string, relativePath: strin
       newPathH = newPathH.replace(/\.render\.js$/, '')
     }
 
-    fileData = handleTemplateRenderContent(templateRes.content)
+    fileData = handleTemplateRenderContent(templateRes instanceof Array ? templateRes : templateRes.content)
   }
 
   // 输出文件
