@@ -237,14 +237,18 @@ async function createTemplate(conf: TemplateConfig) {
 
   if (!templatePath) return exConsole.warn('[clearDir]: Empty Path!')
 
-  // fs.mkdirSync(createPath) // DEBUG
-
   let templateConfigFN = require(path.resolve(templatePath, 'template.config.js'))
   if (templateConfigFN.default) templateConfigFN = templateConfigFN.default
   const templateConfigJSON = templateConfigFN(conf)
   const filePaths = handleTemplateFiles(templatePath, templateConfigJSON.includes, templateConfigJSON.ignore)
-  console.log(filePaths, conf)
+  // console.log(filePaths, conf) // DEBUG
   filePaths.forEach((v) => copyTemplateFile(templatePath, createPath, v, conf))
+
+  console.log('\n')
+  exConsole.success(`[Create] Successfully created. ${chalk.underline(createPath)}\n`)
+
+  exConsole.info(`[Next] cd ${conf.PROJECT_NAME}`)
+  exConsole.info(`[Next] yarn ${chalk.gray('or')} npm i\n`)
 }
 
 /**
@@ -315,12 +319,11 @@ function copyTemplateFile(filePath: string, newPath: string, relativePath: strin
   }
 
   // 输出文件
-  fs.writeFile(newPathH, fileData, { encoding: 'utf-8' }, (err) => {
-    if (err) {
-      exConsole.error(`[Create File] ${newPathH}`)
-      exConsole.error(err)
-    } else {
-      exConsole.info(`[Create File] ${newPathH}`)
-    }
-  })
+  try {
+    fs.writeFileSync(newPathH, fileData, { encoding: 'utf-8' })
+    exConsole.info(`[Create File] ${newPathH}`)
+  } catch (err) {
+    exConsole.error(`[Create File] ${newPathH}`)
+    exConsole.error(err)
+  }
 }

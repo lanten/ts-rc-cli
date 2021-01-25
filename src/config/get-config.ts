@@ -1,5 +1,6 @@
 import path from 'path'
 import chalk from 'chalk'
+import merge from 'webpack-merge'
 import { exConsole, syncExec } from '../utils'
 import { assignDefaultConfig } from './default.config'
 import { ReactTsConfig } from '../../types/'
@@ -29,6 +30,6 @@ syncExec({
 let userConfig = require(outPath)
 if (userConfig.default) userConfig = userConfig.default
 
-const config: ReactTsConfig = Object.assign({}, assignDefaultConfig(userConfig), userConfig)
+const config = merge<ReactTsConfig>(assignDefaultConfig(userConfig), userConfig)
 
 export default config

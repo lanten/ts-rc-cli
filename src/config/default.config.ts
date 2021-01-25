@@ -50,7 +50,7 @@ export function assignDefaultConfig(userConfig: ReactTsConfigPartial): ReactTsCo
       API_BASE: '',
     },
 
-    postcssOptions: {},
+    postcssOptions: void 0,
 
     env: {
       mock: {

@@ -57,7 +57,7 @@ export declare interface ReactTsConfig<V = EnvVariables> {
     [key: string]: EnvOptions
   }
   /** postcss 相关配置 */
-  postcssOptions: {
+  postcssOptions?: {
     /** Enable PostCSS Parser support in CSS-in-JS */
     execute?: boolean
     sourceMap?: boolean

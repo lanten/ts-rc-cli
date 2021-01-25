@@ -80,7 +80,7 @@ function startRenderer(): Promise<webpack.Stats> {
 
     const server = new WebpackDevServer(rendererCompiler as any, devServerOptions)
 
-    server.listen(port, host, (err) => {
+    server.listen(port, (err) => {
       if (err) {
         exConsole.error(err)
       }

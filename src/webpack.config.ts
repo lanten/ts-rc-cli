@@ -1,4 +1,4 @@
-import webpack, { Configuration } from 'webpack'
+import webpack, { Configuration, RuleSetUseItem } from 'webpack'
 import Webpackbar from 'webpackbar'
 import htmlWebpackPlugin from 'html-webpack-plugin'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
@@ -39,7 +39,12 @@ const tsLoader: webpack.RuleSetUseItem = {
   },
 }
 
-const styleLoader = [{ loader: 'css-loader' }, { loader: 'postcss-loader', options: postcssOptions }]
+const styleLoader: RuleSetUseItem[] = [{ loader: 'css-loader' }]
+
+if (postcssOptions) {
+  styleLoader.push({ loader: 'postcss-loader', options: postcssOptions })
+}
+
 if (NODE_ENV === 'development') {
   styleLoader.unshift({ loader: 'css-hot-loader' }, { loader: 'style-loader' })
 } else {
