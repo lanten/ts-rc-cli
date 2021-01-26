@@ -1,4 +1,5 @@
 import webpack, { Configuration, RuleSetUseItem } from 'webpack'
+
 import Webpackbar from 'webpackbar'
 import htmlWebpackPlugin from 'html-webpack-plugin'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
@@ -22,6 +23,7 @@ const {
   postcssOptions,
   terserOptions,
   htmlOptions,
+  moduleFederationOptions,
 } = reactTsConfig
 const { NODE_ENV, BUILD_ENV = 'dev' } = process.env
 const ENV_CONFIG = env[BUILD_ENV]
@@ -139,17 +141,23 @@ let webpackConfig: Configuration = {
         return defines
       })()
     ),
+
     new Webpackbar({}),
+
+    moduleFederationOptions ? new webpack.container.ModuleFederationPlugin(moduleFederationOptions) : void 0,
+
     new htmlWebpackPlugin({
       template: htmlTemplate,
       filename: 'index.html',
       templateParameters: htmlConfig,
       ...htmlOptions,
     }),
+
     new MiniCssExtractPlugin({
       filename: 'css/[name].[fullhash:7].css',
       chunkFilename: 'css/[name].[chunkhash:7].css',
     }),
+
     new webpack.ProvidePlugin(provide),
   ] as webpack.WebpackPluginInstance[],
 }

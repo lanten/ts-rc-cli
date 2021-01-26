@@ -1,7 +1,11 @@
-import { Configuration } from 'webpack'
+import webpack, { Configuration } from 'webpack'
 import { Configuration as DevServerConfiguration } from 'webpack-dev-server'
 import { TerserPluginOptions } from 'terser-webpack-plugin'
 import { Options as HtmlOptions } from 'html-webpack-plugin'
+
+export type ModuleFederationPluginOptions = ConstructorParameters<
+  typeof webpack.container.ModuleFederationPlugin
+>[0]
 
 export declare interface EnvVariables {
   /** 项目名称 */
@@ -84,6 +88,7 @@ export declare interface ReactTsConfig<V = EnvVariables> {
 
   terserOptions?: TerserPluginOptions
   htmlOptions?: HtmlOptions
+  moduleFederationOptions?: ModuleFederationPluginOptions
 }
 
 export type ReactTsConfigPartial<T = EnvVariables> = Partial<ReactTsConfig<T>>
