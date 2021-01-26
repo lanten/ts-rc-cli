@@ -144,8 +144,6 @@ let webpackConfig: Configuration = {
 
     new Webpackbar({}),
 
-    moduleFederationOptions ? new webpack.container.ModuleFederationPlugin(moduleFederationOptions) : void 0,
-
     new htmlWebpackPlugin({
       template: htmlTemplate,
       filename: 'index.html',
@@ -153,13 +151,17 @@ let webpackConfig: Configuration = {
       ...htmlOptions,
     }),
 
-    new MiniCssExtractPlugin({
+    (new MiniCssExtractPlugin({
       filename: 'css/[name].[fullhash:7].css',
       chunkFilename: 'css/[name].[chunkhash:7].css',
-    }),
+    }) as unknown) as webpack.WebpackPluginInstance,
 
     new webpack.ProvidePlugin(provide),
-  ] as webpack.WebpackPluginInstance[],
+  ],
+}
+
+if (moduleFederationOptions) {
+  webpackConfig.plugins?.push(new webpack.container.ModuleFederationPlugin(moduleFederationOptions))
 }
 
 // 开发环境配置
