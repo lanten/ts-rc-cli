@@ -2,6 +2,7 @@
 .history
 node_modules
 dist
+create-test
 
 # local env files
 .env.local

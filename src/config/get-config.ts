@@ -8,8 +8,9 @@ import { ReactTsConfig } from '../../types/'
 const { CONFIG_PATH = 'config' } = process.env
 
 const rootPath = process.cwd()
+const rootName = rootPath.replace(/^\/.*\//, '')
 const inputPath = path.resolve(rootPath, CONFIG_PATH)
-const outPath = path.resolve(__dirname, '../config-dist', CONFIG_PATH)
+const outPath = path.resolve(__dirname, '../config-dist', `${rootName}.${CONFIG_PATH}`)
 
 exConsole.info(chalk.cyanBright('Config Compiling...'))
 
