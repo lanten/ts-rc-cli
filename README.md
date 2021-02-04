@@ -1,5 +1,8 @@
 # ts-rc-cli
-
+![v](https://img.shields.io/npm/v/ts-rc-cli)
+![dm](https://img.shields.io/npm/dm/ts-rc-cli)
+![languages](https://img.shields.io/github/languages/top/lanten/ts-rc-cli)
+![last-commit](https://img.shields.io/github/last-commit/lanten/ts-rc-cli)
 
 ### 命令行工具
 
@@ -29,7 +32,6 @@ const config: ReactTsConfigPartial = {
   projectTitle,
   port: 18081,
   htmlTemplate: path.resolve(rootPath, 'src/index.html'),
-  devPublicPath: '',
 
   entry: {
     app: path.resolve(rootPath, 'src/index.tsx'),
@@ -78,12 +80,12 @@ chestnut:
 
 启动 dev-server:
 ```
-ts-rc-dev
+ts-rc dev
 ```
 
 编译:
 ```
-ts-rc-build
+ts-rc build
 ```
 
 脚本将自动读取 `config` 下的配置文件
