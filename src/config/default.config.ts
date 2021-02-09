@@ -10,8 +10,8 @@ export function assignDefaultConfig(userConfig: ReactTsConfigPartial): ReactTsCo
     projectName,
     projectTitle,
     port: 18081,
-    entry: path.resolve(rootPath, 'src/index.ts'),
-    htmlTemplate: path.resolve(rootPath, 'src/index.html'),
+    // entry: path.resolve(rootPath, 'src/index.ts'),
+    // htmlTemplate: path.resolve(rootPath, 'src/index.html'),
     dist: path.resolve(rootPath, 'dist'),
     host: 'localhost',
 

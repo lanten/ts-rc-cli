@@ -6,6 +6,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
 import TerserPlugin from 'terser-webpack-plugin'
 import tsImportPluginFactory from 'ts-import-plugin'
+import merge from 'webpack-merge'
 
 import { reactTsConfig } from './config'
 
@@ -144,13 +145,6 @@ let webpackConfig: Configuration = {
 
     new Webpackbar({}),
 
-    new htmlWebpackPlugin({
-      template: htmlTemplate,
-      filename: 'index.html',
-      templateParameters: htmlConfig,
-      ...htmlOptions,
-    }),
-
     (new MiniCssExtractPlugin({
       filename: 'css/[name].[fullhash:7].css',
       chunkFilename: 'css/[name].[chunkhash:7].css',
@@ -158,6 +152,17 @@ let webpackConfig: Configuration = {
 
     new webpack.ProvidePlugin(provide),
   ],
+}
+
+if (htmlTemplate) {
+  webpackConfig.plugins?.push(
+    new htmlWebpackPlugin({
+      template: htmlTemplate,
+      filename: 'index.html',
+      templateParameters: htmlConfig,
+      ...htmlOptions,
+    })
+  )
 }
 
 if (moduleFederationOptions) {
@@ -185,7 +190,7 @@ if (NODE_ENV === 'development') {
 }
 
 if (afterWebpackConfig) {
-  webpackConfig = afterWebpackConfig(webpackConfig)
+  webpackConfig = merge(webpackConfig, afterWebpackConfig(webpackConfig))
 }
 
 export default webpackConfig
