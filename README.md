@@ -4,13 +4,27 @@
 ![languages](https://img.shields.io/github/languages/top/lanten/ts-rc-cli)
 ![last-commit](https://img.shields.io/github/last-commit/lanten/ts-rc-cli)
 
-### 命令行工具
+### 创建模板项目
 
-| 命令        | 说明         | 参数                                  |
-| ----------- | ------------ | ------------------------------------- |
-| ts-rc       | 启动本地服务 | 'dev'  \| 'build' \| 'create', ...env |
-| ts-rc-dev   | 启动本地服务 | ...env                                |
-| ts-rc-build | 执行编译脚本 | ...env                                |
+```bash
+npm i -g ts-rc-cli
+
+# >>
+
+ts-rc create
+```
+
+### 指令
+
+`ts-rc` 命令, 例子: `ts-rc dev`
+
+| 指令   | 说明         | 参数   |
+| ------ | ------------ | ------ |
+| create | 创建模板项目 | ...env |
+| dev    | 启动本地服务 | ...env |
+| build  | 执行编译脚本 | ...env |
+
+
 
 
 ### 配置
