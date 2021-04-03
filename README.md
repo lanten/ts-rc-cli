@@ -127,3 +127,8 @@ ts-rc-build MY_ENV=xxx
 ```bash
 git submodule init
 ```
+
+## 拉取子模块
+```bash
+git submodule update
+```
