@@ -34,7 +34,7 @@ export function clearDir(pathStr?: string, delDir?: boolean, createDir?: boolean
 
     if (delDir) fs.rmdirSync(pathStr)
   } else if (createDir) {
-    fs.mkdirSync(pathStr)
+    mkdirsSync(pathStr)
   }
 }
 
@@ -83,5 +83,17 @@ export function syncExec(paramsSrc: { bash: string; msg?: string; inputPath?: st
   } catch (ex) {
     if (msg) exConsole.error(`${msg}: failed.\n ${ex}`)
     return ex.toString()
+  }
+}
+
+// 递归创建目录 同步方法
+export function mkdirsSync(dirname: string) {
+  if (fs.existsSync(dirname)) {
+    return true
+  } else {
+    if (mkdirsSync(path.dirname(dirname))) {
+      fs.mkdirSync(dirname)
+      return true
+    }
   }
 }
