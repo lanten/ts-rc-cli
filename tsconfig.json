@@ -29,7 +29,7 @@
   },
   "include": [
     "src",
-    "types"
+    "typings"
   ],
   "exclude": [
     "node_modules",

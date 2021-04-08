@@ -1,5 +1,5 @@
 import path from 'path'
-import { ReactTsConfig, ReactTsConfigPartial } from '@/types'
+import { ReactTsConfig, ReactTsConfigPartial } from '@/typings'
 
 const rootPath = process.cwd()
 

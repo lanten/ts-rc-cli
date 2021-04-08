@@ -1,6 +1,7 @@
 import webpack, { Configuration, RuleSetUseItem } from 'webpack'
 
 import Webpackbar from 'webpackbar'
+import ESLintPlugin from 'eslint-webpack-plugin'
 import htmlWebpackPlugin from 'html-webpack-plugin'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
@@ -23,6 +24,7 @@ const {
   terserOptions,
   htmlOptions,
   moduleFederationOptions,
+  eslintOptions,
 } = reactTsConfig
 const { NODE_ENV, BUILD_ENV = 'dev' } = process.env
 const ENV_CONFIG = env[BUILD_ENV]
@@ -74,11 +76,11 @@ let webpackConfig: Configuration = {
     rules: [
       {
         test: /(?<!\.d)\.tsx?$/,
-        use: [tsLoader, { loader: 'eslint-loader' }],
+        use: [tsLoader],
       },
       {
         test: /\.jsx?$/,
-        use: [tsLoader, { loader: 'eslint-loader' }],
+        use: [tsLoader],
         exclude: /node_modules/,
       },
       {
@@ -120,16 +122,9 @@ let webpackConfig: Configuration = {
     ],
   },
 
-  // optimization: {
-  //   splitChunks: {
-  //     chunks: 'all',
-  //     name: 'bundle',
-  //   },
-  //   minimizer: [],
-  // },
-
   plugins: [
     new htmlWebpackPlugin(htmlOptions),
+    new ESLintPlugin(eslintOptions),
     new webpack.DefinePlugin(
       ((): { [key: string]: any } => {
         const defines = {}

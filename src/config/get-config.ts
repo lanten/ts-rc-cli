@@ -3,7 +3,7 @@ import chalk from 'chalk'
 import merge from 'webpack-merge'
 import { exConsole, syncExec } from '../utils'
 import { assignDefaultConfig } from './default.config'
-import { ReactTsConfig } from '../../types/'
+import { ReactTsConfig } from '../../typings'
 
 const { CONFIG_PATH = 'config' } = process.env
 
