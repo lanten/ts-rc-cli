@@ -178,8 +178,8 @@ async function checkBaseInfo() {
     `${renderText('Name           ')}: ${renderText(packageJSON.name, '#66ACEF')}`,
     `${renderText('Description    ')}: ${renderText(packageJSON.description, '#66ACEF')}`,
     `${renderText('Ver            ')}: ${renderText(packageJSON.version, '#66ACEF')}`,
-    `${renderText('Ver.Typescript ')}: ${renderText(packageJSON.dependencies.typescript, '#66ACEF')}`,
-    `${renderText('Ver.Webpack    ')}: ${renderText(packageJSON.dependencies.webpack, '#66ACEF')}`,
+    `${renderText('Ver.Typescript ')}: ${renderText(packageJSON.peerDependencies.typescript, '#66ACEF')}`,
+    `${renderText('Ver.Webpack    ')}: ${renderText(packageJSON.peerDependencies.webpack, '#66ACEF')}`,
     splitLine,
   ]
 

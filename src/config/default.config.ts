@@ -10,8 +10,6 @@ export function assignDefaultConfig(userConfig: ReactTsConfigPartial): ReactTsCo
     projectName,
     projectTitle,
     port: 18081,
-    // entry: path.resolve(rootPath, 'src/index.ts'),
-    // htmlTemplate: path.resolve(rootPath, 'src/index.html'),
     dist: path.resolve(rootPath, 'dist'),
     host: 'localhost',
 
@@ -30,12 +28,6 @@ export function assignDefaultConfig(userConfig: ReactTsConfigPartial): ReactTsCo
       extractComments: false, // 不提取任何注释
     },
 
-    htmlConfig: {
-      title: `${projectTitle}`,
-      lang: 'zh-CN',
-      keywords: `${projectTitle}`,
-    },
-
     alias: {
       '@': path.resolve(rootPath, 'src'),
     },
@@ -49,8 +41,6 @@ export function assignDefaultConfig(userConfig: ReactTsConfigPartial): ReactTsCo
       PROJECT_TITLE: projectTitle,
       API_BASE: '',
     },
-
-    postcssOptions: void 0,
 
     env: {
       mock: {
@@ -66,6 +56,16 @@ export function assignDefaultConfig(userConfig: ReactTsConfigPartial): ReactTsCo
       prod: {
         publicPath: '',
         variables: {},
+      },
+    },
+
+    postcssOptions: void 0,
+    htmlOptions: {
+      filename: 'index.html',
+      templateParameters: {
+        title: `${projectTitle}`,
+        lang: 'zh-CN',
+        keywords: `${projectTitle}`,
       },
     },
   }

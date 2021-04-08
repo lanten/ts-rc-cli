@@ -69,12 +69,15 @@ function startRenderer(): Promise<webpack.Stats> {
     const rendererCompiler = webpack(webpackConfig)
     rendererCompiler.hooks.done.tap('done', (stats) => {
       const { publicPath = '' } = devServerOptions
-
-      const localUrl = path.join(`${host}:${port}`, publicPath)
-      const ipUrl = path.join(`${ip}:${port}`, publicPath)
+      const isAbs = /^https?.+$/.test(publicPath)
+      const localUrl = isAbs ? publicPath : `${protocol}://${path.join(`${host}:${port}`, publicPath)}`
       exConsole.success(`Dev Server started. (${chalk.yellow(`${projectName}-${BUILD_ENV}`)})`)
-      exConsole.info(`${chalk.dim('[ HOST ]')}: ${chalk.magenta.underline(`${protocol}://${localUrl}`)}`)
-      exConsole.info(`${chalk.dim('[ IP   ]')}: ${chalk.magenta.underline(`${protocol}://${ipUrl}`)}`)
+      exConsole.info(`${chalk.dim('[ HOST ]')}: ${chalk.magenta.underline(localUrl)}`)
+
+      if (!isAbs) {
+        const ipUrl = `${protocol}://${path.join(`${ip}:${port}`, publicPath)}`
+        exConsole.info(`${chalk.dim('[ IP   ]')}: ${chalk.magenta.underline(ipUrl)}`)
+      }
       resolve(stats)
     })
 

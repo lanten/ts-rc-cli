@@ -32,16 +32,12 @@ export declare interface ReactTsConfig<V = EnvVariables> {
   port: number
   /** 入口文件配置 默认: 'src/index.ts' */
   entry?: Configuration['entry']
-  /** html 模板 默认: src/index.html */
-  htmlTemplate?: string
   /** 编译输出目录 默认: dist */
   dist: string
   /** 本地 host, 需要手动修改 默认: localhost */
   host: string
   /** webpack-dev-server 相关配置 */
   devServerOptions?: DevServerConfiguration
-  /** 注入到 html 模板中的变量 */
-  htmlConfig?: any
   /** 路径别名 默认 */
   alias: {
     [key: string]: string
@@ -50,8 +46,8 @@ export declare interface ReactTsConfig<V = EnvVariables> {
   provide: {
     [key: string]: any
   }
-  /** webpack.config 后处理 */
-  afterWebpackConfig?: (webpackConfig: Configuration) => Configuration
+  /** webpack.config 配置 */
+  configureWebpack?: (webpackConfig: Configuration) => Configuration
   /** dev-server 中使用的代理配置 */
   proxy: any
   /** 公共环境变量 */

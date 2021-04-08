@@ -12,15 +12,13 @@ import { reactTsConfig } from './config'
 
 const {
   dist,
-  htmlTemplate,
   alias,
   provide,
   env,
-  htmlConfig,
   COMMON_ENV,
   devServerOptions,
   entry,
-  afterWebpackConfig,
+  configureWebpack,
   postcssOptions,
   terserOptions,
   htmlOptions,
@@ -131,6 +129,7 @@ let webpackConfig: Configuration = {
   // },
 
   plugins: [
+    new htmlWebpackPlugin(htmlOptions),
     new webpack.DefinePlugin(
       ((): { [key: string]: any } => {
         const defines = {}
@@ -152,17 +151,6 @@ let webpackConfig: Configuration = {
 
     new webpack.ProvidePlugin(provide),
   ],
-}
-
-if (htmlTemplate) {
-  webpackConfig.plugins?.push(
-    new htmlWebpackPlugin({
-      template: htmlTemplate,
-      filename: 'index.html',
-      templateParameters: htmlConfig,
-      ...htmlOptions,
-    })
-  )
 }
 
 if (moduleFederationOptions) {
@@ -189,8 +177,8 @@ if (NODE_ENV === 'development') {
   )
 }
 
-if (afterWebpackConfig) {
-  webpackConfig = merge(webpackConfig, afterWebpackConfig(webpackConfig))
+if (configureWebpack) {
+  webpackConfig = merge(webpackConfig, configureWebpack(webpackConfig))
 }
 
 export default webpackConfig
