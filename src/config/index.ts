@@ -1,1 +1,1 @@
-export { default as reactTsConfig } from './get-config'
+export * from './get-config'

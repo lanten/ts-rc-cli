@@ -1,3 +1,4 @@
+import fs from 'fs'
 import path from 'path'
 import chalk from 'chalk'
 import merge from 'webpack-merge'
@@ -9,35 +10,53 @@ const { CONFIG_PATH = 'config' } = process.env
 
 const rootPath = process.cwd()
 const rootName = rootPath.replace(/^\/.*\//, '')
-const inputPath = path.resolve(rootPath, CONFIG_PATH)
-const outPath = path.resolve(__dirname, '../config-dist', `${rootName}-${CONFIG_PATH}`)
+const inputPath = path.resolve(rootPath, CONFIG_PATH, 'index.ts')
 
-exConsole.info(chalk.cyanBright('Config Compiling...'))
+export const reactTsConfig = getConfig(inputPath)
 
-clearDir(outPath, false, true)
+export function getConfig(inputPath: string): ReactTsConfig {
+  let fileName, ext
+  inputPath.replace(/\/([^\/]+)$/, (_, $1: string) => {
+    const $1Arr = $1.split('.')
+    fileName = $1Arr[0]
+    ext = $1Arr.length > 1 ? $1Arr[$1Arr.length - 1] : void 0
+    return ''
+  })
+  fileName = ext === 'ts' ? `${fileName}.js` : 'index.js'
 
-const tscOptions = [
-  '-m commonjs',
-  '-t es6',
-  '--moduleResolution node',
-  '--resolveJsonModule true',
-  '--esModuleInterop true',
-  '--allowSyntheticDefaultImports true',
-  '--suppressImplicitAnyIndexErrors true',
-  '--skipLibCheck true',
-  '--types node',
-  '--lib esnext,scripthost,es5',
-  `--outDir ${outPath}`,
-]
+  if (!fs.existsSync(inputPath)) {
+    exConsole.error(`The configuration file: ${inputPath} does not exist.`)
+    process.exit()
+  }
 
-syncExec({
-  bash: `tsc ${inputPath} ${tscOptions.join(' ')}`,
-  msg: 'Config compile',
-})
+  const outPath = path.resolve(__dirname, '../config-dist', `${rootName}-${CONFIG_PATH}`)
+  exConsole.info(chalk.cyanBright('Config Compiling...'))
+  clearDir(outPath, false, true)
 
-let userConfig = require(outPath)
-if (userConfig.default) userConfig = userConfig.default
+  const tscOptions = [
+    '-m commonjs',
+    '-t es6',
+    '--moduleResolution node',
+    '--resolveJsonModule true',
+    '--esModuleInterop true',
+    '--allowSyntheticDefaultImports true',
+    '--suppressImplicitAnyIndexErrors true',
+    '--skipLibCheck true',
+    '--types node',
+    '--lib esnext,scripthost,es5',
+    `--outDir ${outPath}`,
+  ]
 
-const config = merge<ReactTsConfig>(assignDefaultConfig(userConfig), userConfig)
+  syncExec({
+    bash: `tsc ${inputPath} ${tscOptions.join(' ')}`,
+    msg: 'Config compile',
+  })
 
-export default config
+  let userConfig: ReactTsConfig = require(path.join(outPath, fileName))
+  // @ts-ignore
+  if (userConfig.default) userConfig = userConfig.default
+
+  const config = merge<ReactTsConfig>(assignDefaultConfig(userConfig), userConfig)
+
+  return config
+}
