@@ -1,6 +1,6 @@
 {
   "name": "ts-rc-cli",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "React + Typescript Web 项目脚手架",
   "main": "dist/index.js",
   "typings": "typings/index.d.ts",
@@ -20,7 +20,7 @@
   },
   "files": [
     "bin",
-    "types",
+    "typings",
     "react-ts-template",
     "dist",
     "package.json",
