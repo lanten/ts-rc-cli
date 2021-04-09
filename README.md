@@ -108,7 +108,7 @@ ts-rc-build MY_ENV=xxx
 
 ## 默认配置
 
-在 [config.d.ts](./types/config.d.ts) 中查看全部默认配置
+在 [config.d.ts](./typings/config.d.ts) 中查看全部默认配置
 
 - 在生产环境中默认移除了 `console.log`, 可以在 `terserOptions` 中修改
 - `@` 是 `src` 的别名
