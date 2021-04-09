@@ -4,7 +4,6 @@
 ![languages](https://img.shields.io/github/languages/top/lanten/ts-rc-cli)
 ![last-commit](https://img.shields.io/github/last-commit/lanten/ts-rc-cli)
 
-> Node >= 14
 
 ### 创建模板项目
 
