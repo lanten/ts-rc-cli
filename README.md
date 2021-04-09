@@ -46,7 +46,12 @@ const config: ReactTsConfigPartial = {
   projectName,
   projectTitle,
   port: 18081,
-  htmlTemplate: path.resolve(rootPath, 'src/index.html'),
+  htmlOptions: {
+    template: path.resolve(rootPath, 'src/index.html'),
+  },
+  devServerOptions: {
+    publicPath: '',
+  },
 
   entry: {
     app: path.resolve(rootPath, 'src/index.tsx'),
@@ -64,7 +69,7 @@ chestnut:
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es6",
+    "target": "es5",
     "sourceMap": false,
     "strict": true,
     "moduleResolution": "node",
@@ -112,24 +117,41 @@ ts-rc-dev MY_ENV=xxx
 ts-rc-build MY_ENV=xxx
 ```
 
+
 ## 默认配置
 
 在 [config.d.ts](./types/config.d.ts) 中查看全部默认配置
 
 - 在生产环境中默认移除了 `console.log`, 可以在 `terserOptions` 中修改
 - `@` 是 `src` 的别名
+- 默认 `dev-server` 端口号: `18080`
 - 默认入口文件: `src/main.ts`
-- 默认环境区分: `mock` | `dev` | `prod`
+- 默认构建环境: `mock` | `dev` | `prod`
+
+
+
+## 环境变量
+| 变量名      | 说明         | 类型                       | 默认值          |
+| ----------- | ------------ | -------------------------- | --------------- |
+| CONFIG_PATH | 配置文件路径 | string                     | config/index.ts |
+| NODE_ENV    | Node 参数    | development/production     | auto            |
+| BUILD_ENV   | 构建参数     | keyOf ReactTsConfig['env'] | dev             |
+
 
 
 ---
 
-## 初始化子模块
+## 源代码相关
+
+#### 子模块
+- [react-ts-template](https://github.com/lanten/react-ts-template)
+
+#### 初始化子模块
 ```bash
 git submodule init
 ```
 
-## 拉取子模块
+#### 拉取子模块
 ```bash
 git submodule update
 ```
