@@ -6,11 +6,11 @@ import { exConsole, syncExec, clearDir } from '../utils'
 import { assignDefaultConfig } from './default.config'
 import { ReactTsConfig } from '../../typings'
 
-const { CONFIG_PATH = 'config' } = process.env
+const { CONFIG_PATH = 'config/index.ts' } = process.env
 
 const rootPath = process.cwd()
 const rootName = rootPath.replace(/^\/.*\//, '')
-const inputPath = path.resolve(rootPath, CONFIG_PATH, 'index.ts')
+const inputPath = path.resolve(rootPath, CONFIG_PATH)
 
 export const reactTsConfig = getConfig(inputPath)
 
@@ -29,7 +29,7 @@ export function getConfig(inputPath: string): ReactTsConfig {
     process.exit()
   }
 
-  const outPath = path.resolve(__dirname, '../config-dist', `${rootName}-${CONFIG_PATH}`)
+  const outPath = path.resolve(__dirname, '../config-dist', rootName)
   exConsole.info(chalk.cyanBright('Config Compiling...'))
   clearDir(outPath, false, true)
 

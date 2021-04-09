@@ -92,7 +92,11 @@ export function mkdirsSync(dirname: string) {
     return true
   } else {
     if (mkdirsSync(path.dirname(dirname))) {
-      fs.mkdirSync(dirname)
+      try {
+        fs.mkdirSync(dirname)
+      } catch (error) {
+        exConsole.warn(`mkdir ${dirname} failed.`)
+      }
       return true
     }
   }
