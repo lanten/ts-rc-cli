@@ -62,35 +62,23 @@ export default config
 
 ```
 
-创建 `config/tsconfig.json` 文件
-
-chestnut:
+#### ⚠ 注意: `config` 使用的 `tsconfig` 是独立的, 如下所示
 ```json
-{
-  "compilerOptions": {
-    "module": "commonjs",
-    "target": "es5",
-    "sourceMap": false,
-    "strict": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "types": [
-      "node"
-    ],
-    "lib": [
-      "esnext",
-      "scripthost",
-      "es5"
-    ]
-  },
-  "exclude": [
-    "node_modules",
-  ]
-}
+[
+  "-m commonjs",
+  "-t es6",
+  "--moduleResolution node",
+  "--resolveJsonModule true",
+  "--esModuleInterop true",
+  "--allowSyntheticDefaultImports true",
+  "--suppressImplicitAnyIndexErrors true",
+  "--skipLibCheck true",
+  "--types node",
+  "--lib esnext,scripthost,es5",
+  "--outDir ${outPath}",
+]
 ```
+
 
 项目根目录需要添加 `tsconfig.json` 文件.
 
