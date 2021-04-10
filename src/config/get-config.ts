@@ -6,23 +6,21 @@ import { exConsole, syncExec, clearDir } from '../utils'
 import { assignDefaultConfig } from './default.config'
 import { ReactTsConfig } from '../../typings'
 
-const { CONFIG_PATH = 'config/index.ts' } = process.env
+const { CONFIG_PATH = 'config' } = process.env
 
 const rootPath = process.cwd()
-const rootName = rootPath.replace(/^\/.*\//, '')
+const rootName = path.basename(rootPath)
 const inputPath = path.resolve(rootPath, CONFIG_PATH)
 
 export const reactTsConfig = getConfig(inputPath)
 
-export function getConfig(inputPath: string): ReactTsConfig {
-  let fileName, ext
-  inputPath.replace(/\/([^\/]+)$/, (_, $1: string) => {
-    const $1Arr = $1.split('.')
-    fileName = $1Arr[0]
-    ext = $1Arr.length > 1 ? $1Arr[$1Arr.length - 1] : void 0
-    return ''
-  })
-  fileName = ext === 'ts' ? `${fileName}.js` : 'index.js'
+export function getConfig(inputPathSource: string): ReactTsConfig {
+  exConsole.info(chalk.cyanBright('Config Compiling...'))
+
+  const ext = path.extname(inputPathSource)
+  const basename = path.basename(inputPathSource, ext)
+  const inputPath = ext ? inputPathSource : path.resolve(inputPathSource, 'index.ts')
+  const outputFileName = ext ? `${basename}.js` : 'index.js'
 
   if (!fs.existsSync(inputPath)) {
     exConsole.error(`The configuration file: ${inputPath} does not exist.`)
@@ -30,7 +28,9 @@ export function getConfig(inputPath: string): ReactTsConfig {
   }
 
   const outPath = path.resolve(__dirname, '../config-dist', rootName)
-  exConsole.info(chalk.cyanBright('Config Compiling...'))
+
+  // console.log({ inputPath, outPath, __dirname, os: process.platform, rootName, outputFileName, ext })
+
   clearDir(outPath, false, true)
 
   const tscOptions = [
@@ -43,7 +43,7 @@ export function getConfig(inputPath: string): ReactTsConfig {
     '--suppressImplicitAnyIndexErrors true',
     '--skipLibCheck true',
     '--types node',
-    '--lib esnext,scripthost,es5',
+    // '--lib esnext,scripthost,es5',
     `--outDir ${outPath}`,
   ]
 
@@ -52,7 +52,7 @@ export function getConfig(inputPath: string): ReactTsConfig {
     msg: 'Config compile',
   })
 
-  let userConfig: ReactTsConfig = require(path.join(outPath, fileName))
+  let userConfig: ReactTsConfig = require(path.join(outPath, outputFileName))
   // @ts-ignore
   if (userConfig.default) userConfig = userConfig.default
 
