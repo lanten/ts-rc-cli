@@ -82,6 +82,9 @@
     "webpack": "^5.31.0"
   },
   "devDependencies": {},
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lanten/ts-rc-cli.git"
