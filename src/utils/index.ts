@@ -86,7 +86,11 @@ export function syncExec(paramsSrc: { bash: string; msg?: string; inputPath?: st
   }
 }
 
-// 递归创建目录 同步方法
+/**
+ * 递归创建目录 同步方法
+ * @param dirname
+ * @returns
+ */
 export function mkdirsSync(dirname: string) {
   if (fs.existsSync(dirname)) {
     return true

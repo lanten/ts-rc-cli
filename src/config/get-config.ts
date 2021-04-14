@@ -28,9 +28,6 @@ export function getConfig(inputPathSource: string): ReactTsConfig {
   }
 
   const outPath = path.resolve(__dirname, '../config-dist', rootName)
-
-  // console.log({ inputPath, outPath, __dirname, os: process.platform, rootName, outputFileName, ext })
-
   clearDir(outPath, false, true)
 
   const tscOptions = [
