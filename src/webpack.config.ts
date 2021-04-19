@@ -116,7 +116,7 @@ let webpackConfig: Configuration = {
         options: {
           outputPath: 'assets',
           esModule: false,
-          name: '[name]-[fullhash:7].[ext]',
+          name: '[name]-[hash:7].[ext]',
         },
       },
     ],
