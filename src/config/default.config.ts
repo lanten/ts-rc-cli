@@ -68,5 +68,8 @@ export function assignDefaultConfig(userConfig: ReactTsConfigPartial): ReactTsCo
         keywords: `${projectTitle}`,
       },
     },
+    lessOptions: {
+      javascriptEnabled: true,
+    },
   }
 }

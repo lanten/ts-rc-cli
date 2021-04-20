@@ -25,6 +25,7 @@ const {
   htmlOptions,
   moduleFederationOptions,
   eslintOptions,
+  lessOptions,
 } = reactTsConfig
 const { NODE_ENV, BUILD_ENV = 'dev' } = process.env
 const ENV_CONFIG = env[BUILD_ENV]
@@ -90,9 +91,7 @@ let webpackConfig: Configuration = {
           {
             loader: 'less-loader',
             options: {
-              lessOptions: {
-                javascriptEnabled: true,
-              },
+              lessOptions,
             },
           },
         ],
