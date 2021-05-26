@@ -1,13 +1,13 @@
 {
   "name": "ts-rc-cli",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "React + Typescript Web 项目脚手架",
   "main": "dist/index.js",
   "typings": "typings/index.d.ts",
   "scripts": {
     "pu": "npm publish --access=public",
     "prepare": "npm run build:pkg",
-    "build:pkg": "rm -rf ./dist && tsc -p ./tsconfig.json -d",
+    "build:pkg": "tsc -p ./tsconfig.json -d",
     "build:demo": "npm run build:pkg && node bin/ts-rc-build.js",
     "test": "npm run build:pkg && node bin/index.js",
     "get-config": "npm run build:pkg && cross-env CONFIG_PATH=create-test/config node dist/config/get-config.js "
