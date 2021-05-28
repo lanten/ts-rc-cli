@@ -1,6 +1,4 @@
-# [submodule "templates/react-ts-template"]
-# 	path = templates/react-ts-template
-# 	url = git@github.com:lanten/react-ts-template.git
+
 [submodule "templates/react-ts-template"]
 	path = templates/react-ts-template
 	url = git@github.com:lanten/react-ts-template.git

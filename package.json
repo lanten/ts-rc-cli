@@ -21,7 +21,7 @@
   "files": [
     "bin",
     "typings",
-    "react-ts-template",
+    "templates",
     "dist",
     "package.json",
     "README.md",

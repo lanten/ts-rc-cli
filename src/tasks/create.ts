@@ -14,6 +14,8 @@ import {
 
 const packageJSON = require(path.resolve(__dirname, '../../package.json'))
 
+const templatesPath = path.resolve(__dirname, '../../templates')
+
 /** 预装功能 */
 export type PreInstalls =
   /** 是否集成 Redux ($store) */
@@ -60,34 +62,53 @@ export interface TemplateConfigJSON {
 
 // -------------------------------------------------------------------------
 
-checkBaseInfo()
-  .then(() => {
-    getCreateConfig()
-  })
-  .catch((message) => {
-    exConsole.warn(message || '配置异常!')
+/** 确认基本信息 */
+async function chooseTemplate() {
+  const renderText = (text: string, color = '#FE8D00') => chalk.hex(color)(text)
+  const splitLine = chalk.gray('-'.repeat(50))
+
+  const startToolTips = [
+    splitLine,
+    renderText('即将创建模板项目, 在这之前, 请先确认相关信息'),
+    splitLine,
+    `${renderText('Name           ')}: ${renderText(packageJSON.name, '#66ACEF')}`,
+    `${renderText('Description    ')}: ${renderText(packageJSON.description, '#66ACEF')}`,
+    `${renderText('Ver            ')}: ${renderText(packageJSON.version, '#66ACEF')}`,
+    `${renderText('Ver.Typescript ')}: ${renderText(packageJSON.peerDependencies.typescript, '#66ACEF')}`,
+    `${renderText('Ver.Webpack    ')}: ${renderText(packageJSON.peerDependencies.webpack, '#66ACEF')}`,
+    splitLine,
+  ]
+
+  console.log(startToolTips.join('\n'))
+
+  const templateList = fs.readdirSync(templatesPath).filter((filePath) => {
+    const curPath = path.join(templatesPath, filePath)
+    if (fs.statSync(curPath).isDirectory()) {
+      return fs.existsSync(path.join(curPath, 'template.config.js'))
+    }
+    return false
   })
 
-// test // DEBUG
-// createTemplate({
-//   CLI_PACKAGE_NAME: 'ts-rc-cli',
-//   PROJECT_NAME: 'asd',
-//   PROJECT_TITLE: 'asd',
-//   USE_REDUX: 0,
-//   USE_AXIOS: 0,
-//   USE_GLOBAL_TOOLS: 0,
-//   USE_REACT_ROUTER: 1,
-//   USE_ANTD: 1,
-//   USE_LESS: 1,
-// })
-
-/** 必填项验证 */
-function requiredValidate(input: string) {
-  if ([undefined, null, ''].includes(input)) {
-    return '你必须必填写!'
-  } else {
-    return true
+  if (!templateList.length) {
+    exConsole.error('未找到可用模板，请先添加！')
+    process.exit()
   }
+
+  return inquirer
+    .prompt<{ templateName: string }>({
+      name: 'templateName',
+      type: 'list',
+      choices: templateList,
+      message: '没问题的话，选择一个模板',
+    })
+    .then((val) => {
+      console.log(val)
+      if (val && val.templateName) {
+        return val.templateName
+      } else {
+        return Promise.reject(false)
+      }
+    })
 }
 
 /** 询问表单 */
@@ -164,36 +185,6 @@ async function getCreateConfig() {
     .catch((error) => {
       console.log(error)
     })
-}
-
-/** 确认基本信息 */
-async function checkBaseInfo() {
-  const renderText = (text: string, color = '#FE8D00') => chalk.hex(color)(text)
-  const splitLine = chalk.gray('-'.repeat(50))
-
-  const startToolTips = [
-    splitLine,
-    renderText('即将创建模板项目, 在这之前, 请先确认相关信息'),
-    splitLine,
-    `${renderText('Name           ')}: ${renderText(packageJSON.name, '#66ACEF')}`,
-    `${renderText('Description    ')}: ${renderText(packageJSON.description, '#66ACEF')}`,
-    `${renderText('Ver            ')}: ${renderText(packageJSON.version, '#66ACEF')}`,
-    `${renderText('Ver.Typescript ')}: ${renderText(packageJSON.peerDependencies.typescript, '#66ACEF')}`,
-    `${renderText('Ver.Webpack    ')}: ${renderText(packageJSON.peerDependencies.webpack, '#66ACEF')}`,
-    splitLine,
-  ]
-
-  console.log(startToolTips.join('\n'))
-
-  return true
-
-  // return inquirer.prompt({ name: 'next', type: 'confirm', message: '确认信息' }).then((val) => {
-  //   if (val && val.next) {
-  //     return true
-  //   } else {
-  //     return Promise.reject(false)
-  //   }
-  // })
 }
 
 /** 获取创建目录 */
@@ -281,6 +272,14 @@ function handleTemplateFiles(
   return allPaths
 }
 
+/**
+ * 复制模板文件
+ * @param filePath
+ * @param newPath
+ * @param relativePath
+ * @param conf
+ * @returns
+ */
 function copyTemplateFile(filePath: string, newPath: string, relativePath: string, conf: TemplateConfig): void {
   const sourcePath = path.resolve(filePath, relativePath)
   let newPathH = path.resolve(newPath, relativePath)
@@ -327,3 +326,36 @@ function copyTemplateFile(filePath: string, newPath: string, relativePath: strin
     exConsole.error(err)
   }
 }
+
+/** 必填项验证 */
+function requiredValidate(input: string) {
+  if ([undefined, null, ''].includes(input)) {
+    return '你必须必填写!'
+  } else {
+    return true
+  }
+}
+
+// --------------------------------------------------------------------------------
+
+chooseTemplate()
+  .then((templateName) => {
+    console.log('选择了模板：', templateName)
+    getCreateConfig()
+  })
+  .catch((message) => {
+    exConsole.warn(message || '配置异常!')
+  })
+
+// test // DEBUG
+// createTemplate({
+//   CLI_PACKAGE_NAME: 'ts-rc-cli',
+//   PROJECT_NAME: 'asd',
+//   PROJECT_TITLE: 'asd',
+//   USE_REDUX: 0,
+//   USE_AXIOS: 0,
+//   USE_GLOBAL_TOOLS: 0,
+//   USE_REACT_ROUTER: 1,
+//   USE_ANTD: 1,
+//   USE_LESS: 1,
+// })
