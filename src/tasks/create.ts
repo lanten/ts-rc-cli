@@ -14,19 +14,7 @@ import {
 
 const packageJSON = require(path.resolve(__dirname, '../../package.json'))
 
-const templatesPath = path.resolve(__dirname, '../../templates')
-
-/** 预装功能 */
-export type PreInstalls =
-  /** 是否集成 Redux ($store) */
-  | 'USE_REDUX'
-  /** 是否启用 Axios ($api) */
-  | 'USE_AXIOS'
-  /** 是否集成 Ant-Design 及定制主体配置 (将强制启用 less) */
-  | 'USE_ANTD'
-
-/** 集成 css 预处理器 */
-export type StyleHandlers = 'less' | 'scss' | 'none'
+const templatesDir = path.resolve(__dirname, '../../templates')
 
 /** 采集用户配置 */
 export interface CreateConfig {
@@ -34,30 +22,16 @@ export interface CreateConfig {
   PROJECT_NAME: string
   /** 项目标题 */
   PROJECT_TITLE: string
-  /** 预装功能 */
-  preInstalls: PreInstalls[]
-  /** 集成 css 预处理器 */
-  styleHandler: StyleHandlers
 }
 
 /** 映射到模板中的配置 */
 export interface TemplateConfig extends Pick<CreateConfig, 'PROJECT_NAME' | 'PROJECT_TITLE'> {
   /** cli 包名 */
   CLI_PACKAGE_NAME: string
-  /** 是否集成 Redux ($store) */
-  USE_REDUX?: 0 | 1
-  /** 是否启用 Axios ($api) */
-  USE_AXIOS?: 0 | 1
-  /** 是否集成 Ant-Design 及定制主体配置 (将强制启用 less) */
-  USE_ANTD?: 0 | 1
-  /** 使用 less */
-  USE_LESS?: 0 | 1
-  /** 使用 scss */
-  USE_SCSS?: 0 | 1
-}
-
-export interface TemplateConfigJSON {
-  includes?: string[]
+  /** cli 版本 */
+  CLI_PACKAGE_VERSION: string
+  /** 自定义变量 */
+  [k: string]: any
 }
 
 // -------------------------------------------------------------------------
@@ -81,8 +55,8 @@ async function chooseTemplate() {
 
   console.log(startToolTips.join('\n'))
 
-  const templateList = fs.readdirSync(templatesPath).filter((filePath) => {
-    const curPath = path.join(templatesPath, filePath)
+  const templateList = fs.readdirSync(templatesDir).filter((filePath) => {
+    const curPath = path.join(templatesDir, filePath)
     if (fs.statSync(curPath).isDirectory()) {
       return fs.existsSync(path.join(curPath, 'template.config.js'))
     }
@@ -102,7 +76,6 @@ async function chooseTemplate() {
       message: '没问题的话，选择一个模板',
     })
     .then((val) => {
-      console.log(val)
       if (val && val.templateName) {
         return val.templateName
       } else {
@@ -111,80 +84,40 @@ async function chooseTemplate() {
     })
 }
 
-/** 询问表单 */
-async function getCreateConfig() {
-  return inquirer
-    .prompt<CreateConfig>([
-      { type: 'input', name: 'PROJECT_NAME', message: '项目名称', validate: requiredValidate },
-      {
-        type: 'input',
-        name: 'PROJECT_TITLE',
-        message: '项目标题',
-        default: (e: CreateConfig) => e.PROJECT_NAME,
-        validate: requiredValidate,
-      },
-      {
-        type: 'checkbox',
-        name: 'preInstalls',
-        message: '选择需要预装的功能',
-        default: [
-          'USE_REDUX',
-          'USE_AXIOS',
-          'USE_GLOBAL_TOOLS',
-          'USE_REACT_ROUTER',
-          'USE_ANTD',
-        ] as PreInstalls[],
-        choices: [
-          { value: 'USE_REDUX', name: '集成 Redux ($store)' },
-          { value: 'USE_AXIOS', name: '是否启用 Axios ($api)' },
-          // { value: 'USE_GLOBAL_TOOLS', name: '启用全局工具模块 ($tools)' },
-          // { value: 'USE_REACT_ROUTER', name: '集成 react-router 及相关路由模块' },
-          { value: 'USE_ANTD', name: '集成 Ant-Design 及定制主体配置 (将强制启用 less)' },
-        ] as {
-          value: PreInstalls
-          name: string
-        }[],
-      },
-      {
-        type: 'list',
-        name: 'styleHandler',
-        message: '选择 css 预处理器',
-        default: 'less' as StyleHandlers,
-        choices: [{ value: 'less' }, { value: 'scss' }, { value: 'none' }] as { value: StyleHandlers }[],
-        when: (e) => !e.preInstalls.includes('USE_ANTD'),
-      },
-    ])
-    .then((res) => {
-      if (res.preInstalls.includes('USE_ANTD')) {
-        res.styleHandler = 'less'
-      }
+/**
+ * 询问表单
+ * @param templateName 模板名称
+ * @returns
+ */
+async function getCreateConfig(templateName: string) {
+  const templateConfig = require(path.join(templatesDir, templateName, 'template.config.js'))
+  const { inquirerConfig, inquirerHandler } = templateConfig || {}
+  if (inquirerConfig) {
+    return inquirer
+      .prompt<any>(inquirerConfig)
+      .then((res) => {
+        const templateConfig: TemplateConfig = {
+          CLI_PACKAGE_NAME: packageJSON.name,
+          CLI_PACKAGE_VERSION: packageJSON.version,
+          PROJECT_NAME: res.PROJECT_NAME,
+          PROJECT_TITLE: res.PROJECT_TITLE,
+        }
 
-      const templateConfig: TemplateConfig = {
-        CLI_PACKAGE_NAME: packageJSON.name,
-        PROJECT_NAME: res.PROJECT_NAME,
-        PROJECT_TITLE: res.PROJECT_TITLE,
-      }
+        if (inquirerHandler) {
+          // 后处理合并
+          Object.assign(templateConfig, inquirerHandler(res, templateConfig))
+        }
 
-      res.preInstalls.forEach((v) => {
-        templateConfig[v] = 1
+        createTemplate(templateConfig, templateName)
+
+        return res
       })
-
-      switch (res.styleHandler) {
-        case 'less':
-          templateConfig.USE_LESS = 1
-          break
-
-        case 'scss':
-          templateConfig.USE_SCSS = 1
-          break
-      }
-
-      createTemplate(templateConfig)
-      return res
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+      .catch((error) => {
+        console.log(error)
+      })
+  } else {
+    Promise.resolve()
+  }
 }
 
 /** 获取创建目录 */
@@ -222,9 +155,9 @@ async function getCreatePath(name: string): Promise<string> {
 }
 
 /** 创建模板项目 */
-async function createTemplate(conf: TemplateConfig) {
+async function createTemplate(conf: TemplateConfig, templateName: string) {
   const createPath = await getCreatePath(conf.PROJECT_NAME)
-  const templatePath = path.resolve(__dirname, '../../react-ts-template')
+  const templatePath = path.join(templatesDir, templateName)
 
   if (!templatePath) return exConsole.warn('[clearDir]: Empty Path!')
 
@@ -247,11 +180,7 @@ async function createTemplate(conf: TemplateConfig) {
  * @param pathStr
  * @param includes
  */
-function handleTemplateFiles(
-  pathStr: string,
-  includes: TemplateConfigJSON['includes'] = ['**/*'],
-  ignore?: string | string[]
-): string[] {
+function handleTemplateFiles(pathStr: string, includes = ['**/*'], ignore?: string | string[]): string[] {
   const allPaths: string[] = []
 
   includes.forEach((includePath) => {
@@ -327,21 +256,11 @@ function copyTemplateFile(filePath: string, newPath: string, relativePath: strin
   }
 }
 
-/** 必填项验证 */
-function requiredValidate(input: string) {
-  if ([undefined, null, ''].includes(input)) {
-    return '你必须必填写!'
-  } else {
-    return true
-  }
-}
-
 // --------------------------------------------------------------------------------
 
 chooseTemplate()
   .then((templateName) => {
-    console.log('选择了模板：', templateName)
-    getCreateConfig()
+    getCreateConfig(templateName)
   })
   .catch((message) => {
     exConsole.warn(message || '配置异常!')
