@@ -1,38 +1,58 @@
 # ts-rc-cli
-![v](https://img.shields.io/npm/v/ts-rc-cli)
-![dm](https://img.shields.io/npm/dm/ts-rc-cli)
-![languages](https://img.shields.io/github/languages/top/lanten/ts-rc-cli)
-![last-commit](https://img.shields.io/github/last-commit/lanten/ts-rc-cli)
 
+![v](https://img.shields.io/npm/v/ts-rc-cli) ![dm](https://img.shields.io/npm/dm/ts-rc-cli) ![languages](https://img.shields.io/github/languages/top/lanten/ts-rc-cli) ![last-commit](https://img.shields.io/github/last-commit/lanten/ts-rc-cli)
 
-### 创建模板项目
-
-```bash
-npm i -g ts-rc-cli
-
-# >>
-
-ts-rc create
-```
-
-### 指令
+## 命令行工具
 
 `ts-rc` 命令, 例子: `ts-rc dev`
 
-| 指令   | 说明         | 参数   |
-| ------ | ------------ | ------ |
-| create | 创建模板项目 | ...env |
-| dev    | 启动本地服务 | ...env |
-| build  | 执行编译脚本 | ...env |
+| 指令   | 说明         | 参数                 |
+| ------ | ------------ | -------------------- |
+| create | 创建模板项目 | -                    |
+| add    | 添加模板     | gitUrl, name(非必须) |
+| remove | 删除本地模板 | name(非必须)         |
+| dev    | 启动本地服务 | ...env               |
+| build  | 执行编译脚本 | ...env               |
+| -h     | 显示帮助     | -                    |
 
+## 快速开始
 
+全局安装脚手架
 
+```bash
+npm i -g ts-rc-cli
+# or
+yarn global add ts-rc-cli
+```
 
-### 配置
+通过模板快速创建项目
+
+```bash
+ts-rc create
+```
+
+启动 dev 本地开发服务
+
+```bash
+yarn dev
+# or
+npm run dev
+```
+
+生产编译
+
+```bash
+yarn build
+# or
+npm run build
+```
+
+## 自定义配置
 
 创建 `config/index.ts` 文件
 
 chestnut:
+
 ```ts
 import path from 'path'
 import { ReactTsConfigPartial } from 'ts-rc-cli'
@@ -59,10 +79,10 @@ const config: ReactTsConfigPartial = {
 }
 
 export default config
-
 ```
 
-#### ⚠ 注意: `config` 使用的 `tsconfig` 是独立的, 如下所示
+### ⚠ 注意: `config` 使用的 `tsconfig` 是独立的, 如下所示
+
 ```json
 [
   "-m commonjs",
@@ -75,36 +95,24 @@ export default config
   "--skipLibCheck true",
   "--types node",
   "--lib esnext,scripthost,es5",
-  "--outDir ${outPath}",
+  "--outDir ${outPath}"
 ]
 ```
-
 
 项目根目录需要添加 `tsconfig.json` 文件.
 
 此外,请按需添加 `.eslintignore`, `.eslintrc.js`, `.browserslistrc` 文件.
 
-### 使用
-
-启动 dev-server:
-```
-ts-rc dev
-```
-
-编译:
-```
-ts-rc build
-```
-
 脚本将自动读取 `config` 下的配置文件
 
+## 集成 cross-env
 
-整合了 `cross-env`, 可以直接添加环境变量:
-```
+集成了 [cross-env](https://www.npmjs.com/package/cross-env), 可以直接添加环境变量:
+
+```bash
 ts-rc-dev MY_ENV=xxx
 ts-rc-build MY_ENV=xxx
 ```
-
 
 ## 默认配置
 
@@ -116,30 +124,34 @@ ts-rc-build MY_ENV=xxx
 - 默认入口文件: `src/main.ts`
 - 默认构建环境: `mock` | `dev` | `prod`
 
-
-
 ## 环境变量
+
 | 变量名      | 说明         | 类型                       | 默认值          |
 | ----------- | ------------ | -------------------------- | --------------- |
 | CONFIG_PATH | 配置文件路径 | string                     | config/index.ts |
 | NODE_ENV    | Node 参数    | development/production     | auto            |
 | BUILD_ENV   | 构建参数     | keyOf ReactTsConfig['env'] | dev             |
 
+## 模板开发文档
 
+TODO...
 
 ---
 
 ## 源代码相关
 
 #### 子模块
+
 - [react-ts-template](https://github.com/lanten/react-ts-template)
 
 #### 初始化子模块
+
 ```bash
 git submodule init
 ```
 
 #### 拉取子模块
+
 ```bash
 git submodule update
 ```

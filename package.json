@@ -13,10 +13,7 @@
     "get-config": "npm run build:pkg && cross-env CONFIG_PATH=create-test/config node dist/config/get-config.js "
   },
   "bin": {
-    "ts-rc": "./bin/index.js",
-    "ts-rc-create": "./bin/ts-rc-create.js",
-    "ts-rc-dev": "./bin/ts-rc-dev.js",
-    "ts-rc-build": "./bin/ts-rc-build.js"
+    "ts-rc": "./bin/index.js"
   },
   "files": [
     "bin",

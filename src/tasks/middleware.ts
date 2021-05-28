@@ -1,12 +1,10 @@
 import { exConsole } from '../utils'
 
+const START_TYPE_LIST = ['dev', 'build', 'create', 'add', 'remove', 'help', '-h']
 const { START_TYPE } = process.env
 
-const START_TYPE_LIST = ['dev', 'build', 'create']
-
 if (!START_TYPE || !START_TYPE_LIST.includes(START_TYPE)) {
-  exConsole.error(`START_TYPE: ${START_TYPE} ERROR. Optional: [${START_TYPE_LIST.join(' | ')}]`)
-  process.exit()
+  exConsole.error(`START_TYPE: ${START_TYPE} ERROR.`)
 }
 
 switch (START_TYPE) {
@@ -22,6 +20,28 @@ switch (START_TYPE) {
 
   case 'build': {
     require('./build')
+    break
+  }
+
+  case 'add': {
+    require('./add')
+    break
+  }
+
+  case 'help':
+  default: {
+    const help = [
+      'Commands:',
+      '  dev [...crossEnv] ·············· 启动本地开发服务',
+      '  build [...crossEnv] ············ 执行生产编译',
+      '  create ························· 通过模板快速创建项目',
+      '  add <gitUrl> [name] ············ 添加模板',
+      '  remove [name] ·················· 删除本地模板',
+      '  help,-h ························ 显示帮助信息',
+      '',
+    ]
+
+    console.log(help.join('\n'))
     break
   }
 }
