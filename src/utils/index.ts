@@ -39,32 +39,6 @@ export function clearDir(pathStr?: string, delDir?: boolean, createDir?: boolean
 }
 
 /**
- * 固定字符串长度
- * @param n 要转换的内容
- * @param p 固定长度
- * @param r 补齐字符
- */
-export function fixedStringLength(n: number | string, p?: number, r = '0'): string {
-  let str = String(n)
-  if (p && str.length !== p) {
-    if (str.length >= p) {
-      str = str.replace(new RegExp(`^(.{${p}})(.*)$`), '$1')
-    } else {
-      const lost = p - str.length
-      if (lost > 0) {
-        for (let i = 0; i < lost; i++) {
-          str = r + str
-        }
-      }
-    }
-  } else {
-    str = String(n)
-  }
-
-  return str
-}
-
-/**
  * 同步执行命令
  * @param paramsSrc
  */

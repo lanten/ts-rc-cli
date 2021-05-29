@@ -73,7 +73,7 @@ async function chooseTemplate() {
       name: 'templateName',
       type: 'list',
       choices: templateList,
-      message: '没问题的话，选择一个模板',
+      message: '一切就绪！选择一个模板后继续',
     })
     .then((val) => {
       if (val && val.templateName) {

@@ -1,7 +1,8 @@
 import { exConsole } from '../utils'
 
-const START_TYPE_LIST = ['dev', 'build', 'create', 'add', 'remove', 'help', '-h']
 const { START_TYPE } = process.env
+
+const START_TYPE_LIST = ['dev', 'build', 'create', 'add', 'remove', 'help', '-h']
 
 if (!START_TYPE || !START_TYPE_LIST.includes(START_TYPE)) {
   exConsole.error(`START_TYPE: ${START_TYPE} ERROR.`)
@@ -25,6 +26,11 @@ switch (START_TYPE) {
 
   case 'add': {
     require('./add')
+    break
+  }
+
+  case 'remove': {
+    require('./remove')
     break
   }
 
