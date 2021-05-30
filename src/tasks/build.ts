@@ -24,7 +24,7 @@ function build() {
 
   exConsole.info(`Building ${chalk.cyanBright(env)} ...`)
   exConsole.info(
-    `NODE_ENV: ${chalk.yellowBright(process.env.NODE_ENV)} BUILD_ENV: ${chalk.bgRedBright(`  ${env}  `)}`
+    `NODE_ENV: ${chalk.yellowBright(process.env.NODE_ENV)} BUILD_ENV: ${chalk.white.bgRedBright(`  ${env}  `)}`
   )
 
   Promise.all([buildRenderer()])
