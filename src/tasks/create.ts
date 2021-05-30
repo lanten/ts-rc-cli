@@ -146,7 +146,7 @@ async function getCreatePath(name: string): Promise<string> {
       .then((val) => {
         if (val && val.next) {
           const stop = exConsole.loading(`[Clear Dir] ${chalk.blue(createPath)} deleting...`)
-          clearDir(createPath, true, false, true)
+          clearDir(createPath, true)
           stop('SUCCESS', `[Clear Dir] <${createPath}> deleted.`)
           return Promise.resolve(createPath)
         } else {
