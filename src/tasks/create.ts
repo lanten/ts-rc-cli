@@ -110,8 +110,6 @@ async function getCreateConfig(templateName: string) {
           Object.assign(templateConfig, inquirerHandler(res, templateConfig))
         }
 
-        console.log({ templateConfig })
-
         createTemplate(templateConfig, templateName)
 
         return res
