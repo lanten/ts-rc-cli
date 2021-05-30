@@ -5,9 +5,10 @@ import chalk from 'chalk'
 
 import { exConsole, clearDir } from '../utils'
 
-const templatesDir = path.resolve(__dirname, '../../templates')
 const sourceArgv = process.env.SOURCE_ARGV?.split(',') || []
 const inputTemplateName = sourceArgv[3]
+
+const templatesDir = path.resolve(__dirname, '../../templates')
 
 const templateList = fs.readdirSync(templatesDir).filter((filePath) => {
   const curPath = path.join(templatesDir, filePath)
@@ -51,9 +52,9 @@ function removeTemplate(templateName: string) {
         if (val && val.next) {
           const stop = exConsole.loading('Removing ...')
           clearDir(templatePath, true)
-          stop('SUCCESS', 'Removed successfully ')
+          stop('SUCCESS', 'Removed successfully.')
         } else {
-          exConsole.info('User canceled operation')
+          exConsole.info('User canceled operation.')
           process.exit()
         }
       })

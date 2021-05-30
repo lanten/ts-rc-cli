@@ -4,9 +4,10 @@ import chalk from 'chalk'
 import { exConsole, asyncExec } from '../utils'
 
 const sourceArgv = process.env.SOURCE_ARGV?.split(',') || []
-const templatesDir = path.resolve(__dirname, '../../templates')
 const gitUrl = sourceArgv[3]
 let templateName = sourceArgv[4] || ''
+
+const templatesDir = path.resolve(__dirname, '../../templates')
 
 if (!gitUrl) {
   exConsole.error(

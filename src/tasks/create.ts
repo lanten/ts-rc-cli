@@ -12,8 +12,10 @@ import {
   TemplateRenderRes,
 } from '../utils'
 
-const packageJSON = require(path.resolve(__dirname, '../../package.json'))
+const sourceArgv = process.env.SOURCE_ARGV?.split(',') || []
+const CREATE_PROJECT_NAME = sourceArgv[3]
 
+const packageJSON = require(path.resolve(__dirname, '../../package.json'))
 const templatesDir = path.resolve(__dirname, '../../templates')
 
 /** 采集用户配置 */
@@ -94,7 +96,7 @@ async function getCreateConfig(templateName: string) {
   const { inquirerConfig, inquirerHandler } = templateConfig || {}
   if (inquirerConfig) {
     return inquirer
-      .prompt<any>(inquirerConfig)
+      .prompt<any>(inquirerConfig(CREATE_PROJECT_NAME))
       .then((res) => {
         const templateConfig: TemplateConfig = {
           CLI_PACKAGE_NAME: packageJSON.name,
@@ -107,6 +109,8 @@ async function getCreateConfig(templateName: string) {
           // 后处理合并
           Object.assign(templateConfig, inquirerHandler(res, templateConfig))
         }
+
+        console.log({ templateConfig })
 
         createTemplate(templateConfig, templateName)
 
@@ -148,7 +152,7 @@ async function getCreatePath(name: string): Promise<string> {
           stop('SUCCESS', `[Clear Dir] <${createPath}> deleted.`)
           return Promise.resolve(createPath)
         } else {
-          // return Promise.reject(false)
+          exConsole.info('User canceled operation.')
           process.exit()
         }
       })
