@@ -6,7 +6,7 @@ import glob from 'glob'
 import {
   exConsole,
   awaitExec,
-  clearDir,
+  asyncClearDir,
   replaceTemplate,
   handleTemplateRenderContent,
   TemplateRenderRes,
@@ -143,10 +143,12 @@ async function getCreatePath(name: string): Promise<string> {
           `Folder: ${chalk.blue(name)} already exists.`
         )} Continue after emptying the directory?`,
       })
-      .then((val) => {
+      .then(async (val) => {
         if (val && val.next) {
           const stop = exConsole.loading(`[Clear Dir] ${chalk.blue(createPath)} deleting...`)
-          clearDir(createPath, true)
+          await asyncClearDir(createPath, true).catch((err) => {
+            exConsole.error('', err)
+          })
           stop('SUCCESS', `[Clear Dir] <${createPath}> deleted.`)
           return Promise.resolve(createPath)
         } else {

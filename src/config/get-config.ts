@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import chalk from 'chalk'
 import merge from 'webpack-merge'
-import { exConsole, asyncExec, clearDir } from '../utils'
+import { exConsole, asyncExec, asyncClearDir } from '../utils'
 import { assignDefaultConfig } from './default.config'
 import { ReactTsConfig } from '../../typings'
 
@@ -25,7 +25,11 @@ export async function getConfig(inputPathSource: string = inputPath): Promise<Re
   }
 
   const outPath = path.resolve(__dirname, '../config-dist', rootName)
-  clearDir(outPath, false, true)
+  const stopLoading = exConsole.loading(`Clear Dir ${chalk.blue(outPath)}`)
+  await asyncClearDir(outPath, false, true).catch((err) => {
+    exConsole.error('', err)
+  })
+  stopLoading('SUCCESS', `Clear Dir ${chalk.blue(outPath)}`)
 
   const tscOptions = [
     '-m commonjs',

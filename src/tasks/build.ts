@@ -1,5 +1,5 @@
 import chalk from 'chalk'
-import { clearDir, exConsole } from '../utils'
+import { awaitClearDir, exConsole } from '../utils'
 
 import webpackConfig from '../webpack.config'
 import buildCommon from './build-common'
@@ -17,7 +17,7 @@ function build() {
   exConsole.info(chalk.cyanBright(`[Clear Dir] ... ${chalk.magenta.underline(reactTsConfig.dist)}`))
 
   try {
-    clearDir(reactTsConfig.dist, false, true)
+    awaitClearDir(reactTsConfig.dist, false, true)
   } catch (error) {
     exConsole.warn(error.message)
   }

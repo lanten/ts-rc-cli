@@ -3,7 +3,7 @@ import fs from 'fs'
 import inquirer from 'inquirer'
 import chalk from 'chalk'
 
-import { exConsole, clearDir } from '../utils'
+import { exConsole, asyncClearDir } from '../utils'
 
 const sourceArgv = process.env.SOURCE_ARGV?.split(',') || []
 const inputTemplateName = sourceArgv[3]
@@ -40,7 +40,7 @@ function removeTemplate(templateName: string) {
   const templatePath = path.join(templatesDir, templateName)
 
   if (!fs.existsSync(templatePath)) {
-    exConsole.error(`Removal failed. template does not exist. ${chalk.yellow(templateName)}`, false, true)
+    exConsole.error(`Removal failed. template does not exist. ${chalk.blue(templateName)}`, false, true)
   } else {
     inquirer
       .prompt({
@@ -48,10 +48,10 @@ function removeTemplate(templateName: string) {
         type: 'confirm',
         message: chalk.yellow(`Local template will be removed: ${templateName}. Please confirm twice.`),
       })
-      .then((val) => {
+      .then(async (val) => {
         if (val && val.next) {
           const stop = exConsole.loading('Removing ...')
-          clearDir(templatePath, true)
+          await asyncClearDir(templatePath, true)
           stop('SUCCESS', 'Removed successfully.')
         } else {
           exConsole.info('User canceled operation.')
