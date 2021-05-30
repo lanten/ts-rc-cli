@@ -12,7 +12,7 @@ import { exConsole } from './console'
 export function asyncClearDir(pathStr?: string, delDir?: boolean, createDir?: boolean): Promise<boolean> {
   if (!pathStr) {
     exConsole.warn('[Clear Dir]: Empty Path!')
-    return Promise.reject()
+    process.exit()
   }
 
   return new Promise(async (resolve, reject) => {
