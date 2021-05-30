@@ -74,7 +74,9 @@ function startRenderer(): Promise<webpack.Stats> {
 }
 
 async function startDevServer() {
-  exConsole.info(chalk.cyanBright(`Dev Server ${BUILD_ENV} Starting ...`))
+  exConsole.info(
+    chalk.cyanBright(`BUILD_ENV: ${chalk.bgRedBright(`  ${BUILD_ENV}  `)} Dev Server Starting ...`)
+  )
   await startRenderer()
 }
 

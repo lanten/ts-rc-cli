@@ -9,12 +9,12 @@ const env = process.env.BUILD_ENV || 'dev'
 
 async function buildRenderer() {
   return buildCommon({ env, webpackConfig: webpackConfig }).then(() => {
-    exConsole.success(`[Build] Successfully: ${env}`)
+    exConsole.success('[Build] Successfully.')
   })
 }
 
 function build() {
-  exConsole.info(chalk.cyanBright(`[Clear Dir] ... ${chalk.magenta.underline(reactTsConfig.dist)}`))
+  exConsole.info(chalk.cyanBright(`Clear Dir ... ${chalk.magenta.underline(reactTsConfig.dist)}`))
 
   try {
     awaitClearDir(reactTsConfig.dist, false, true)
@@ -22,7 +22,7 @@ function build() {
     exConsole.warn(error.message)
   }
 
-  exConsole.info(`[Build] ${chalk.cyanBright(env)} Building...`)
+  exConsole.info(`Building ${chalk.cyanBright(env)} ...`)
   exConsole.info(
     `NODE_ENV: ${chalk.yellowBright(process.env.NODE_ENV)} BUILD_ENV: ${chalk.bgRedBright(`  ${env}  `)}`
   )
