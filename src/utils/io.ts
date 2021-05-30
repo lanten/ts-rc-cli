@@ -21,11 +21,10 @@ export function asyncClearDir(pathStr?: string, delDir?: boolean, createDir?: bo
     if (!fileExists) {
       if (createDir) {
         mkdirDeep(pathStr)
-        reject()
       } else {
-        console.error(`Directory ${delDir} does not exist.`)
-        reject()
+        exConsole.error(`Directory ${delDir} does not exist.`)
       }
+      return resolve(true)
     }
 
     const files = (await asyncReaddirSync(pathStr).catch(reject)) || []
