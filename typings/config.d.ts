@@ -1,5 +1,6 @@
 import webpack, { Configuration } from 'webpack'
 import { Configuration as DevServerConfiguration } from 'webpack-dev-server'
+import { Options as CssMinimizerOptions } from 'css-minimizer-webpack-plugin'
 import { TerserPluginOptions } from 'terser-webpack-plugin'
 import { Options as HtmlOptions } from 'html-webpack-plugin'
 import { Options as ESLintOptions } from 'eslint-webpack-plugin'
@@ -83,6 +84,7 @@ export declare interface ReactTsConfig<V = EnvVariables> {
       | (() => any)
   }
 
+  cssMinimizerOptions?: CssMinimizerOptions
   terserOptions?: TerserPluginOptions
   htmlOptions?: HtmlOptions
   moduleFederationOptions?: ModuleFederationPluginOptions

@@ -13,6 +13,8 @@ export type LogTypes = keyof typeof config
  * 控制台输出扩展
  */
 export class ExConsole {
+  private infoWidth = 9
+
   info(message: string) {
     this.log('INFO', chalk[config.INFO.textColor](message))
   }
@@ -27,15 +29,12 @@ export class ExConsole {
    * @param showDetail 显示错误详情
    * @param exit 是否终止进程
    */
-  error(message: string | Error, showDetail = false, exit?: boolean) {
-    let messageH: string
-    if (message instanceof Error) {
-      messageH = `${chalk.bold(message.name)}: ${message.message}`
-      if (showDetail) messageH = `Detail: ${messageH}\n${message.stack}`
-    } else {
-      messageH = message
+  error(message: string, error: false | Error = false, exit?: boolean) {
+    this.log('ERROR', chalk[config.ERROR.textColor](message))
+
+    if (error) {
+      console.error(error)
     }
-    this.log('ERROR', chalk.red(messageH))
 
     if (exit) {
       process.exit()
@@ -46,7 +45,7 @@ export class ExConsole {
     this.log('SUCCESS', chalk[config.SUCCESS.textColor](message))
   }
 
-  log(type: LogTypes, message: string | Error) {
+  log(type: LogTypes, message: string) {
     const conf = config[type]
     const str = `[${this.getTimeStr()}] ${chalk.white[conf.bgColor].bold(this.center(type))} ${message}`
 
@@ -54,22 +53,51 @@ export class ExConsole {
     return str
   }
 
+  /**
+   * 显示 loading 状态
+   * 注意: 同步进程中 setInterval 会被阻塞
+   * @param message
+   * @returns
+   */
   loading(message?: string) {
     const startTime = this.getTimeStr()
     // const P = ['\\', '|', '/', '-']
     // const P = ['🌑', '🌒', '🌓', '🌔', '🌕', '🌖', '🌗', '🌘']
     // const P = ['🕐', '🕑', '🕒', '🕓', '🕔', '🕕', '🕖', '🕗', '🕘', '🕙', '🕚', '🕛']
-    const P = ['▘', '▝', '▗', '▖']
+    // const P = ['▘', '▝', '▗', '▖']
     // const P = ['◶', '◵', '◴', '◷']
 
-    let x = 0
-    const twirlTimer = setInterval(() => {
-      const stateStr = P[x++]
-      process.stdout.write(`\r[${startTime}] ${this.center(stateStr)} ${message}`)
-      x &= 3
-    }, 80)
+    // let x = 0
+    // const twirlTimer = setInterval(() => {
+    //   const stateStr = P[x++]
+    //   process.stdout.write(`\r[${startTime}] ${this.center(stateStr)} ${message}`)
+    //   x &= 3
+    // }, 80)
 
-    return (type: keyof typeof config, stopMessage?: string) => {
+    const P = '=='
+
+    let x = 0
+    let back = false
+    const max = this.infoWidth - 2 - P.length
+
+    let twirlTimer = setInterval(() => {
+      const stateStr = P.padStart(P.length + x, ' ').padEnd(this.infoWidth - 2, ' ')
+      process.stdout.write(`\r[${startTime}] [${stateStr}] ${message}`)
+
+      if (x >= max) {
+        back = true
+      } else if (x <= 0) {
+        back = false
+      }
+
+      if (back) {
+        x--
+      } else {
+        x++
+      }
+    }, 33)
+
+    let stop = (type: keyof typeof config, stopMessage?: string, exit?: boolean) => {
       const conf = config[type]
       const infoStr = `[${this.getTimeStr()}] ${chalk.white[conf.bgColor].bold(this.center(type))}`
 
@@ -77,8 +105,18 @@ export class ExConsole {
       process.stdout.write(`\r${infoStr} ${chalk[config[type].textColor](stopMessage)}`)
       process.stdout.write('\n')
 
+      if (exit) process.exit()
+
       clearInterval(twirlTimer)
+
+      // 清除指针以允许内存回收
+      // @ts-ignore
+      twirlTimer = undefined
+      // @ts-ignore
+      stop = undefined
     }
+
+    return stop
   }
 
   /**
@@ -87,7 +125,7 @@ export class ExConsole {
    * @param width 总长度
    * @returns
    */
-  center(str: string, width = 9) {
+  center(str: string, width = this.infoWidth) {
     const lack = width - str.length
 
     if (lack <= 0) return str

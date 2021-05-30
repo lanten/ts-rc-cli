@@ -1,7 +1,6 @@
 import webpack, { Configuration } from 'webpack'
 
-import { reactTsConfig } from '../config'
-
+const reactTsConfig = global.reactTsConfig
 const { env: envConfig } = reactTsConfig
 
 interface BuildConfig {

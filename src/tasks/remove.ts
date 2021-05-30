@@ -22,7 +22,7 @@ if (inputTemplateName) {
       name: 'templateName',
       type: 'list',
       choices: templateList,
-      message: '请选择需要删除的模板',
+      message: 'Please select the template to be removed',
     })
     .then((val) => {
       if (val && val.templateName) {
@@ -39,21 +39,21 @@ function removeTemplate(templateName: string) {
   const templatePath = path.join(templatesDir, templateName)
 
   if (!fs.existsSync(templatePath)) {
-    exConsole.error(`删除失败：指定模板不存在 [${chalk.yellow(templateName)}]`, false, true)
+    exConsole.error(`Removal failed. template does not exist. ${chalk.yellow(templateName)}`, false, true)
   } else {
     inquirer
       .prompt({
         name: 'next',
         type: 'confirm',
-        message: chalk.yellow(`即将删除本地模板: [${templateName}] 请二次确认`),
+        message: chalk.yellow(`Local template will be removed: ${templateName}. Please confirm twice.`),
       })
       .then((val) => {
         if (val && val.next) {
-          const stop = exConsole.loading('正在删除...')
+          const stop = exConsole.loading('Removing ...')
           clearDir(templatePath, true)
-          stop('SUCCESS', '删除成功')
+          stop('SUCCESS', 'Removed successfully ')
         } else {
-          exConsole.info('用户取消操作')
+          exConsole.info('User canceled operation')
           process.exit()
         }
       })

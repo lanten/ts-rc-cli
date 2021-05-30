@@ -1,26 +1,36 @@
 import { exConsole } from '../utils'
+import { getConfig } from '../config'
 
 const { START_TYPE } = process.env
 
-const START_TYPE_LIST = ['dev', 'build', 'create', 'add', 'remove', 'help', '-h']
+const START_TYPE_LIST = ['get-config', 'dev', 'build', 'create', 'add', 'remove', 'help', '-h']
 
 if (!START_TYPE || !START_TYPE_LIST.includes(START_TYPE)) {
   exConsole.error(`START_TYPE: ${START_TYPE} ERROR.`)
 }
 
 switch (START_TYPE) {
-  case 'create': {
-    require('./create')
+  case 'get-config': {
+    getConfig()
     break
   }
 
   case 'dev': {
-    require('./dev-server')
+    getConfig().then(() => {
+      require('./dev-server')
+    })
     break
   }
 
   case 'build': {
-    require('./build')
+    getConfig().then(() => {
+      require('./build')
+    })
+    break
+  }
+
+  case 'create': {
+    require('./create')
     break
   }
 
@@ -38,6 +48,7 @@ switch (START_TYPE) {
   default: {
     const help = [
       'Commands:',
+      '  get-config ····················· 编译 config 文件',
       '  dev [...crossEnv] ·············· 启动本地开发服务',
       '  build [...crossEnv] ············ 执行生产编译',
       '  create ························· 通过模板快速创建项目',

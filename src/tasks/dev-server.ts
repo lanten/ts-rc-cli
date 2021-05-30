@@ -7,9 +7,8 @@ import WebpackDevServer, { Configuration } from 'webpack-dev-server'
 
 import { exConsole } from '../utils'
 import webpackConfig from '../webpack.config'
-import { reactTsConfig } from '../config'
 
-const { port, proxy, host: devHost, projectName, devServerOptions: devServerOptionsUser } = reactTsConfig
+const { port, proxy, host: devHost, projectName, devServerOptions: devServerOptionsUser } = global.reactTsConfig
 
 process.env.NODE_ENV = 'development'
 const { BUILD_ENV = 'dev' } = process.env
@@ -68,14 +67,14 @@ function startRenderer(): Promise<webpack.Stats> {
 
     server.listen(port, (err) => {
       if (err) {
-        exConsole.error(err)
+        exConsole.error('Dev Server failed to activate.', err)
       }
     })
   })
 }
 
 async function startDevServer() {
-  exConsole.info(chalk.cyanBright(`${BUILD_ENV} Starting...`))
+  exConsole.info(chalk.cyanBright(`Dev Server ${BUILD_ENV} Starting ...`))
   await startRenderer()
 }
 

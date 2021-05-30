@@ -4,12 +4,12 @@ import Webpackbar from 'webpackbar'
 import ESLintPlugin from 'eslint-webpack-plugin'
 import htmlWebpackPlugin from 'html-webpack-plugin'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
-import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin'
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
 import TerserPlugin from 'terser-webpack-plugin'
 import tsImportPluginFactory from 'ts-import-plugin'
 import merge from 'webpack-merge'
 
-import { reactTsConfig } from './config'
+const reactTsConfig = global.reactTsConfig
 
 const {
   dist,
@@ -21,6 +21,7 @@ const {
   entry,
   configureWebpack,
   postcssOptions,
+  cssMinimizerOptions,
   terserOptions,
   htmlOptions,
   moduleFederationOptions,
@@ -138,10 +139,10 @@ let webpackConfig: Configuration = {
 
     new Webpackbar({}),
 
-    (new MiniCssExtractPlugin({
+    new MiniCssExtractPlugin({
       filename: 'css/[name].[fullhash:7].css',
       chunkFilename: 'css/[name].[chunkhash:7].css',
-    }) as unknown) as webpack.WebpackPluginInstance,
+    }) as unknown as webpack.WebpackPluginInstance,
 
     new webpack.ProvidePlugin(provide),
   ],
@@ -159,16 +160,14 @@ if (NODE_ENV === 'development') {
 
   // 生产环境配置
 } else if (NODE_ENV === 'production') {
-  webpackConfig.plugins?.push(
-    new OptimizeCSSAssetsPlugin({
-      cssProcessorPluginOptions: { preset: ['default', { minifyFontValues: { removeQuotes: false } }] },
-    }) as any
-  )
-
-  webpackConfig.optimization?.minimizer?.push(
-    // https://github.com/terser-js/terser
-    (new TerserPlugin(terserOptions) as unknown) as webpack.WebpackPluginInstance
-  )
+  webpackConfig.optimization = {
+    minimizer: [
+      // https://github.com/webpack-contrib/css-minimizer-webpack-plugin
+      new CssMinimizerPlugin(cssMinimizerOptions) as unknown as webpack.WebpackPluginInstance,
+      // https://github.com/terser-js/terser
+      new TerserPlugin(terserOptions) as unknown as webpack.WebpackPluginInstance,
+    ],
+  }
 }
 
 if (configureWebpack) {

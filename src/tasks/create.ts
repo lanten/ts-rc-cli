@@ -5,7 +5,7 @@ import fs from 'fs'
 import glob from 'glob'
 import {
   exConsole,
-  syncExec,
+  awaitExec,
   clearDir,
   replaceTemplate,
   handleTemplateRenderContent,
@@ -43,7 +43,7 @@ async function chooseTemplate() {
 
   const startToolTips = [
     splitLine,
-    renderText('即将创建模板项目, 在这之前, 请先确认相关信息'),
+    renderText('Typescript + React + Webpack'),
     splitLine,
     `${renderText('Name           ')}: ${renderText(packageJSON.name, '#66ACEF')}`,
     `${renderText('Description    ')}: ${renderText(packageJSON.description, '#66ACEF')}`,
@@ -64,7 +64,7 @@ async function chooseTemplate() {
   })
 
   if (!templateList.length) {
-    exConsole.error('未找到可用模板，请先添加！')
+    exConsole.error('No available template was found, please add one first!')
     process.exit()
   }
 
@@ -73,7 +73,7 @@ async function chooseTemplate() {
       name: 'templateName',
       type: 'list',
       choices: templateList,
-      message: '一切就绪！选择一个模板后继续',
+      message: 'All ready! Continue after choosing a template:',
     })
     .then((val) => {
       if (val && val.templateName) {
@@ -123,10 +123,10 @@ async function getCreateConfig(templateName: string) {
 /** 获取创建目录 */
 async function getCreatePath(name: string): Promise<string> {
   const bash = process.platform == 'win32' ? 'chdir' : 'pwd'
-  const runPath = syncExec({ bash }).trim()
+  const runPath = awaitExec({ bash }).trim()
 
   if (!fs.existsSync(runPath)) {
-    exConsole.error('获取运行路径失败')
+    exConsole.error('[Create] Failed to get the running path.')
     process.exit()
   }
 
@@ -137,12 +137,15 @@ async function getCreatePath(name: string): Promise<string> {
       .prompt({
         name: 'next',
         type: 'confirm',
-        message: `${chalk.red(`文件夹: [${name}] 已存在`)} 确认清空目录后继续?`,
+        message: `${chalk.red(
+          `Folder: ${chalk.blue(name)} already exists.`
+        )} Continue after emptying the directory?`,
       })
       .then((val) => {
         if (val && val.next) {
-          console.log(createPath)
+          const stop = exConsole.loading(`[Clear Dir] ${chalk.blue(createPath)} deleting...`)
           clearDir(createPath, true, false, true)
+          stop('SUCCESS', `[Clear Dir] <${createPath}> deleted.`)
           return Promise.resolve(createPath)
         } else {
           // return Promise.reject(false)
@@ -159,7 +162,7 @@ async function createTemplate(conf: TemplateConfig, templateName: string) {
   const createPath = await getCreatePath(conf.PROJECT_NAME)
   const templatePath = path.join(templatesDir, templateName)
 
-  if (!templatePath) return exConsole.warn('[clearDir]: Empty Path!')
+  if (!templatePath) return exConsole.warn('[Create] Empty template Path!')
 
   let templateConfigFN = require(path.resolve(templatePath, 'template.config.js'))
   if (templateConfigFN.default) templateConfigFN = templateConfigFN.default
@@ -169,7 +172,7 @@ async function createTemplate(conf: TemplateConfig, templateName: string) {
   filePaths.forEach((v) => copyTemplateFile(templatePath, createPath, v, conf))
 
   console.log('\n')
-  exConsole.success(`[Create] Successfully created. ${chalk.underline(createPath)}\n`)
+  exConsole.success(`Successfully created. ${chalk.underline(createPath)}\n`)
 
   exConsole.info(`[Next] cd ${conf.PROJECT_NAME}`)
   exConsole.info(`[Next] yarn ${chalk.gray('or')} npm i\n`)
@@ -216,7 +219,7 @@ function copyTemplateFile(filePath: string, newPath: string, relativePath: strin
   // 创建目录
   if (fs.statSync(sourcePath).isDirectory()) {
     fs.mkdirSync(newPathH, { recursive: true })
-    exConsole.info(`[Create Dir] ${newPathH}`)
+    exConsole.info(`Create Dir ${newPathH}`)
     return
   }
 
@@ -251,8 +254,7 @@ function copyTemplateFile(filePath: string, newPath: string, relativePath: strin
     fs.writeFileSync(newPathH, fileData, { encoding: 'utf-8' })
     exConsole.info(`[Create File] ${newPathH}`)
   } catch (err) {
-    exConsole.error(`[Create File] ${newPathH}`)
-    exConsole.error(err)
+    exConsole.error(`[Create File] ${newPathH}`, err)
   }
 }
 
@@ -263,7 +265,7 @@ chooseTemplate()
     getCreateConfig(templateName)
   })
   .catch((message) => {
-    exConsole.warn(message || '配置异常!')
+    exConsole.warn(message || 'Configuration Error!')
   })
 
 // test // DEBUG
