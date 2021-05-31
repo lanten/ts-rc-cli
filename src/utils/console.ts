@@ -47,9 +47,9 @@ export class ExConsole {
 
   log(type: LogTypes, message: string) {
     const conf = config[type]
-    const str = `[${this.getTimeStr()}] ${chalk.white[conf.bgColor].bold(this.center(type))} ${message}`
+    const str = `[${this.getTimeStr()}] ${chalk.white[conf.bgColor].bold(this.center(type))} ${message}\n`
 
-    console.log(str)
+    process.stdout.write(str)
     return str
   }
 
