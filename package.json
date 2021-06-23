@@ -6,7 +6,7 @@
   "typings": "typings/index.d.ts",
   "scripts": {
     "pu": "npm run build:pkg && npm publish --access=public",
-    "build:pkg": "tsc -p ./tsconfig.json -d",
+    "build:pkg": "rm -rf dist && tsc -p ./tsconfig.json -d",
     "build:demo": "npm run build:pkg && node bin/ts-rc-build.js",
     "test": "npm run build:pkg && node bin/index.js",
     "test:get-config": "npm run test get-config CONFIG_PATH=create-test/config",

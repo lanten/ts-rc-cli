@@ -38,7 +38,7 @@ module.exports = {
     'no-debugger': 'error', // 禁用 debugger
     'no-alert': 'error', // 禁用 alert
 
-    indent: ['error', 2, { SwitchCase: 1 }], // 强制使用两个空格作为缩进
+    // indent: ['error', 2, { SwitchCase: 1 }], // 强制使用两个空格作为缩进
     quotes: ['error', 'single'], //强制使用单引号
     semi: ['error', 'never'], //强制不使用分号结尾
     'comma-dangle': ['error', 'always-multiline'], // 逗号结束
