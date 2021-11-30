@@ -12,6 +12,7 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "suppressImplicitAnyIndexErrors": true,
+    "useUnknownInCatchVariables": false,
     "skipLibCheck": true,
     "types": [
       "node"
