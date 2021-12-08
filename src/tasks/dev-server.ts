@@ -3,7 +3,7 @@ import path from 'path'
 import webpack from 'webpack'
 import address from 'address'
 import defaultGateway from 'default-gateway'
-import WebpackDevServer, { Configuration } from 'webpack-dev-server'
+import WebpackDevServer from 'webpack-dev-server'
 
 import { exConsole } from '../utils'
 import webpackConfig from '../webpack.config'
@@ -30,10 +30,14 @@ for (const key in proxy) {
 const host = devHost || ip || '0.0.0.0'
 const devServerOptions: WebpackDevServer.Configuration = {
   host,
+  port,
   proxy,
-  hot: true,
-  noInfo: true,
-  clientLogLevel: 'warn',
+  client: {
+    // noInfo: true,
+    logging: 'warn',
+    overlay: true,
+    progress: true,
+  },
   historyApiFallback: true,
   compress: true,
   ...devServerOptionsUser,
@@ -44,13 +48,35 @@ function startRenderer(): Promise<webpack.Stats> {
     process.env.port = String(port)
     process.env.host = host
 
-    WebpackDevServer.addDevServerEntrypoints(webpackConfig as Configuration, devServerOptions)
+    // start - 多入口加载热更新 -----------------------------------------------------------------
+    const hotClient = ['webpack-dev-server/client', 'webpack/hot/only-dev-server']
+    if (typeof webpackConfig.entry === 'object') {
+      Object.keys(webpackConfig.entry).forEach((name) => {
+        if (!webpackConfig.entry) throw new Error('webpackConfig.entry')
+        const value = webpackConfig.entry[name]
+        if (Array.isArray(value)) {
+          value.unshift(...hotClient)
+        } else {
+          webpackConfig.entry[name] = [...hotClient, value]
+        }
+      })
+    } else {
+      webpackConfig.entry = [...hotClient, webpackConfig.entry] as string[]
+    }
+    // end -------------------------------------------------------------------------------------
 
-    webpackConfig.devtool = 'source-map'
+    // WebpackDevServer.addDevServerEntrypoints(webpackConfig, devServerOptions)
+
+    webpackConfig.infrastructureLogging = {
+      level: 'warn',
+      appendOnly: true,
+    }
+
+    webpackConfig.stats = false
 
     const rendererCompiler = webpack(webpackConfig)
     rendererCompiler.hooks.done.tap('done', (stats) => {
-      const { publicPath = '' } = devServerOptions
+      const { devMiddleware: { publicPath = '' } = {} } = devServerOptions
       const isAbs = /^https?.+$/.test(publicPath)
       const localUrl = isAbs ? publicPath : `${protocol}://${path.join(`${host}:${port}`, publicPath)}`
       exConsole.success(`Dev Server started. (${chalk.yellow(`${projectName} | ${BUILD_ENV}`)})`)
@@ -63,9 +89,9 @@ function startRenderer(): Promise<webpack.Stats> {
       resolve(stats)
     })
 
-    const server = new WebpackDevServer(rendererCompiler as any, devServerOptions)
+    const server = new WebpackDevServer(devServerOptions, rendererCompiler as any)
 
-    server.listen(port, (err) => {
+    server.start().catch((err) => {
       if (err) {
         exConsole.error('Dev Server failed to activate.', err)
       }

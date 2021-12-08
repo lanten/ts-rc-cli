@@ -9,7 +9,7 @@ import TerserPlugin from 'terser-webpack-plugin'
 import tsImportPluginFactory from 'ts-import-plugin'
 import merge from 'webpack-merge'
 
-const reactTsConfig = global.reactTsConfig
+const huaCliServiceConfig = global.reactTsConfig
 
 const {
   dist,
@@ -27,7 +27,7 @@ const {
   moduleFederationOptions,
   eslintOptions,
   lessOptions,
-} = reactTsConfig
+} = huaCliServiceConfig
 const { NODE_ENV, BUILD_ENV = 'dev' } = process.env
 const ENV_CONFIG = env[BUILD_ENV]
 
@@ -68,7 +68,8 @@ let webpackConfig: Configuration = {
   },
 
   output: {
-    publicPath: NODE_ENV === 'development' ? devServerOptions?.publicPath : ENV_CONFIG.publicPath,
+    publicPath:
+      NODE_ENV === 'development' ? devServerOptions?.devMiddleware?.publicPath || '/' : ENV_CONFIG.publicPath,
     path: dist,
     filename: 'js/[name].[fullhash:7].js',
     chunkFilename: 'js/[name].[chunkhash:7].js',
@@ -112,11 +113,9 @@ let webpackConfig: Configuration = {
       },
       {
         test: /\.(png|jpe?g|gif|svg|swf|woff2?|eot|ttf|otf)(\?.*)?$/,
-        loader: 'file-loader',
-        options: {
-          outputPath: 'assets',
-          esModule: false,
-          name: '[name]-[hash:7].[ext]',
+        type: 'asset/resource',
+        generator: {
+          filename: 'assets/[name]-[hash:7].[ext]',
         },
       },
     ],
@@ -126,7 +125,7 @@ let webpackConfig: Configuration = {
     new htmlWebpackPlugin(htmlOptions),
     new ESLintPlugin(eslintOptions),
     new webpack.DefinePlugin(
-      ((): { [key: string]: any } => {
+      ((): { [key: string]: string | Record<string, any> } => {
         const defines = {}
         const variables = Object.assign({}, COMMON_ENV, ENV_CONFIG.variables)
         Object.keys(variables).forEach((key) => {
@@ -142,9 +141,12 @@ let webpackConfig: Configuration = {
     new MiniCssExtractPlugin({
       filename: 'css/[name].[fullhash:7].css',
       chunkFilename: 'css/[name].[chunkhash:7].css',
-    }) as unknown as webpack.WebpackPluginInstance,
+    }) as any,
 
-    new webpack.ProvidePlugin(provide),
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+      ...provide,
+    }),
   ],
 }
 
@@ -154,18 +156,15 @@ if (moduleFederationOptions) {
 
 // 开发环境配置
 if (NODE_ENV === 'development') {
-  webpackConfig.devtool = 'source-map'
-
-  webpackConfig.plugins?.push(new webpack.HotModuleReplacementPlugin(), new webpack.NoEmitOnErrorsPlugin())
-
+  // webpackConfig.plugins?.push(new webpack.HotModuleReplacementPlugin(), new webpack.NoEmitOnErrorsPlugin())
   // 生产环境配置
 } else if (NODE_ENV === 'production') {
   webpackConfig.optimization = {
     minimizer: [
       // https://github.com/webpack-contrib/css-minimizer-webpack-plugin
-      new CssMinimizerPlugin(cssMinimizerOptions) as unknown as webpack.WebpackPluginInstance,
+      new CssMinimizerPlugin(cssMinimizerOptions) as any,
       // https://github.com/terser-js/terser
-      new TerserPlugin(terserOptions) as unknown as webpack.WebpackPluginInstance,
+      new TerserPlugin(terserOptions),
     ],
   }
 }

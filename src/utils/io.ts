@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import { exConsole } from './console'
+import { exConsole } from '.'
 
 /**
  * 清空文件夹 (异步)

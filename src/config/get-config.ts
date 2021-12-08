@@ -29,7 +29,7 @@ export async function getConfig(inputPathSource: string = inputPath): Promise<Re
   await asyncClearDir(outPath, false, true).catch((err) => {
     exConsole.error('', err)
   })
-  stopLoading('SUCCESS', `Clear Dir ${chalk.blue(outPath)}`)
+  stopLoading(`Clear Dir ${chalk.blue(outPath)}`, 'SUCCESS')
 
   const tscOptions = [
     '-m commonjs',

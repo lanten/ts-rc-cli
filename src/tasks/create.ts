@@ -51,7 +51,7 @@ async function chooseTemplate() {
     `${renderText('Description    ')}: ${renderText(packageJSON.description, '#66ACEF')}`,
     `${renderText('Ver            ')}: ${renderText(packageJSON.version, '#66ACEF')}`,
     `${renderText('Ver.Typescript ')}: ${renderText(packageJSON.peerDependencies.typescript, '#66ACEF')}`,
-    `${renderText('Ver.Webpack    ')}: ${renderText(packageJSON.peerDependencies.webpack, '#66ACEF')}`,
+    `${renderText('Ver.Webpack    ')}: ${renderText(packageJSON.dependencies.webpack, '#66ACEF')}`,
     splitLine,
   ]
 
@@ -149,7 +149,7 @@ async function getCreatePath(name: string): Promise<string> {
           await asyncClearDir(createPath, true).catch((err) => {
             exConsole.error('', err)
           })
-          stop('SUCCESS', `[Clear Dir] <${createPath}> deleted.`)
+          stop(`[Clear Dir] <${createPath}> deleted.`, 'SUCCESS')
           return Promise.resolve(createPath)
         } else {
           exConsole.info('User canceled operation.')

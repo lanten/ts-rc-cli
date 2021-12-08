@@ -52,7 +52,7 @@ function removeTemplate(templateName: string) {
         if (val && val.next) {
           const stop = exConsole.loading('Removing ...')
           await asyncClearDir(templatePath, true)
-          stop('SUCCESS', 'Removed successfully.')
+          stop('Removed successfully.', 'SUCCESS')
         } else {
           exConsole.info('User canceled operation.')
           process.exit()

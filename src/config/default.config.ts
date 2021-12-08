@@ -14,8 +14,10 @@ export function assignDefaultConfig(userConfig: ReactTsConfigPartial): ReactTsCo
     host: 'localhost',
 
     devServerOptions: {
-      publicPath: '/',
-      disableHostCheck: true,
+      allowedHosts: 'all',
+      devMiddleware: {
+        publicPath: '/',
+      },
     },
 
     terserOptions: {
@@ -39,7 +41,6 @@ export function assignDefaultConfig(userConfig: ReactTsConfigPartial): ReactTsCo
     COMMON_ENV: {
       PROJECT_NAME: projectName,
       PROJECT_TITLE: projectTitle,
-      API_BASE: '',
     },
 
     env: {

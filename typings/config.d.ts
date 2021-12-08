@@ -37,7 +37,7 @@ export declare interface ReactTsConfig<V = EnvVariables> {
   /** 编译输出目录 默认: dist */
   dist: string
   /** 本地 host, 需要手动修改 默认: localhost */
-  host: string
+  host?: string
   /** webpack-dev-server 相关配置 */
   devServerOptions?: DevServerConfiguration
   /** 路径别名 默认 */
@@ -51,7 +51,7 @@ export declare interface ReactTsConfig<V = EnvVariables> {
   /** webpack.config 配置 */
   configureWebpack?: (webpackConfig: Configuration) => Configuration
   /** dev-server 中使用的代理配置 */
-  proxy: any
+  proxy?: any
   /** 公共环境变量 */
   COMMON_ENV: V
   /** 环境变量 */
@@ -93,9 +93,3 @@ export declare interface ReactTsConfig<V = EnvVariables> {
 }
 
 export type ReactTsConfigPartial<T = EnvVariables> = Partial<ReactTsConfig<T>>
-
-// declare global {
-//   namespace NodeJS {
-//     interface ProcessEnv extends EnvVariables {}
-//   }
-// }

@@ -1,6 +1,6 @@
 import { execSync, exec, ExecOptions, ExecSyncOptions } from 'child_process'
 
-import { exConsole } from './console'
+import { exConsole } from '.'
 
 export interface ExecParams {
   /** 需要执行的命令 */
@@ -31,14 +31,14 @@ export function asyncExec(paramsSource: (ExecParams & ExecOptions) | string) {
     exec(bash, execParams, (error) => {
       if (error) {
         if (stopLoading) {
-          stopLoading('ERROR', `${message}: failed.\n ${error}`, errorExit)
+          stopLoading(`${message}: failed.\n ${error}`, 'ERROR', errorExit)
         } else {
           exConsole.error(`${message}: failed.`, error, errorExit)
         }
         reject(error)
       } else {
         if (stopLoading) {
-          stopLoading('SUCCESS', `${message}: successfully.`)
+          stopLoading(`${message}: successfully.`, 'SUCCESS')
         } else {
           exConsole.success(`${message}: successfully.`)
         }
