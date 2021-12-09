@@ -53,20 +53,20 @@ function startRenderer(): Promise<webpack.Stats> {
     process.env.host = host
 
     // start - 多入口加载热更新 -----------------------------------------------------------------
-    const hotClient = ['webpack-dev-server/client', 'webpack/hot/only-dev-server']
-    if (typeof webpackConfig.entry === 'object') {
-      Object.keys(webpackConfig.entry).forEach((name) => {
-        if (!webpackConfig.entry) throw new Error('webpackConfig.entry')
-        const value = webpackConfig.entry[name]
-        if (Array.isArray(value)) {
-          value.unshift(...hotClient)
-        } else {
-          webpackConfig.entry[name] = [...hotClient, value]
-        }
-      })
-    } else {
-      webpackConfig.entry = [...hotClient, webpackConfig.entry] as string[]
-    }
+    // const hotClient = ['webpack-dev-server/client', 'webpack/hot/only-dev-server']
+    // if (typeof webpackConfig.entry === 'object') {
+    //   Object.keys(webpackConfig.entry).forEach((name) => {
+    //     if (!webpackConfig.entry) throw new Error('webpackConfig.entry')
+    //     const value = webpackConfig.entry[name]
+    //     if (Array.isArray(value)) {
+    //       value.unshift(...hotClient)
+    //     } else {
+    //       webpackConfig.entry[name] = [...hotClient, value]
+    //     }
+    //   })
+    // } else {
+    //   webpackConfig.entry = [...hotClient, webpackConfig.entry] as string[]
+    // }
     // end -------------------------------------------------------------------------------------
 
     // WebpackDevServer.addDevServerEntrypoints(webpackConfig, devServerOptions)
