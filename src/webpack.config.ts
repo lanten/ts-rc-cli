@@ -9,7 +9,7 @@ import TerserPlugin from 'terser-webpack-plugin'
 import tsImportPluginFactory from 'ts-import-plugin'
 import merge from 'webpack-merge'
 
-const huaCliServiceConfig = global.reactTsConfig
+const reactTsConfig = global.reactTsConfig
 
 const {
   dist,
@@ -27,7 +27,7 @@ const {
   moduleFederationOptions,
   eslintOptions,
   lessOptions,
-} = huaCliServiceConfig
+} = reactTsConfig
 const { NODE_ENV, BUILD_ENV = 'dev' } = process.env
 const ENV_CONFIG = env[BUILD_ENV]
 
@@ -162,7 +162,7 @@ if (NODE_ENV === 'development') {
   webpackConfig.optimization = {
     minimizer: [
       // https://github.com/webpack-contrib/css-minimizer-webpack-plugin
-      new CssMinimizerPlugin(cssMinimizerOptions) as any,
+      new CssMinimizerPlugin(cssMinimizerOptions),
       // https://github.com/terser-js/terser
       new TerserPlugin(terserOptions),
     ],

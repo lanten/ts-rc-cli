@@ -135,13 +135,6 @@
   dependencies:
     "@types/node" "*"
 
-"@types/css-minimizer-webpack-plugin@^3.0.2":
-  version "3.2.1"
-  resolved "https://registry.npmmirror.com/@types/css-minimizer-webpack-plugin/download/@types/css-minimizer-webpack-plugin-3.2.1.tgz#bacbef5d8217074b599bd8a0771ec60ebd46dd16"
-  integrity sha512-MIlnEVQDTX0Y1/ZBY0RyD+F6+ZHlG42qCeSoCVhxI5N1atm+RnmDLQWUCWrdNqebFozUTRLDZJ04v5aYzGG5CA==
-  dependencies:
-    css-minimizer-webpack-plugin "*"
-
 "@types/cssnano@^4.0.1":
   version "4.0.1"
   resolved "https://registry.npmmirror.com/@types/cssnano/download/@types/cssnano-4.0.1.tgz#67fa912753d80973a016e7684a47fedf338aacff"
@@ -735,20 +728,20 @@
 
 "@webpack-cli/configtest@^1.1.0":
   version "1.1.0"
-  resolved "https://registry.npmmirror.com/@webpack-cli/configtest/download/@webpack-cli/configtest-1.1.0.tgz#8342bef0badfb7dfd3b576f2574ab80c725be043"
-  integrity sha1-g0K+8Lrft9/TtXbyV0q4DHJb4EM=
+  resolved "https://registry.yarnpkg.com/@webpack-cli/configtest/-/configtest-1.1.0.tgz#8342bef0badfb7dfd3b576f2574ab80c725be043"
+  integrity sha512-ttOkEkoalEHa7RaFYpM0ErK1xc4twg3Am9hfHhL7MVqlHebnkYd2wuI/ZqTDj0cVzZho6PdinY0phFZV3O0Mzg==
 
 "@webpack-cli/info@^1.4.0":
   version "1.4.0"
-  resolved "https://registry.npmmirror.com/@webpack-cli/info/download/@webpack-cli/info-1.4.0.tgz#b9179c3227ab09cbbb149aa733475fcf99430223"
-  integrity sha1-uRecMierCcu7FJqnM0dfz5lDAiM=
+  resolved "https://registry.yarnpkg.com/@webpack-cli/info/-/info-1.4.0.tgz#b9179c3227ab09cbbb149aa733475fcf99430223"
+  integrity sha512-F6b+Man0rwE4n0409FyAJHStYA5OIZERxmnUfLVwv0mc0V1wLad3V7jqRlMkgKBeAq07jUvglacNaa6g9lOpuw==
   dependencies:
     envinfo "^7.7.3"
 
 "@webpack-cli/serve@^1.6.0":
   version "1.6.0"
-  resolved "https://registry.npmmirror.com/@webpack-cli/serve/download/@webpack-cli/serve-1.6.0.tgz#2c275aa05c895eccebbfc34cfb223c6e8bd591a2"
-  integrity sha1-LCdaoFyJXszrv8NM+yI8bovVkaI=
+  resolved "https://registry.yarnpkg.com/@webpack-cli/serve/-/serve-1.6.0.tgz#2c275aa05c895eccebbfc34cfb223c6e8bd591a2"
+  integrity sha512-ZkVeqEmRpBV2GHvjjUZqEai2PpUbuq8Bqd//vEYsp63J8WyexI8ppCqVS3Zs0QADf6aWuPdU+0XsPI647PVlQA==
 
 "@xtuc/ieee754@^1.2.0":
   version "1.2.0"
@@ -1313,8 +1306,8 @@ colorette@^1.2.2:
 
 colorette@^2.0.10, colorette@^2.0.14:
   version "2.0.16"
-  resolved "https://registry.npmmirror.com/colorette/download/colorette-2.0.16.tgz?cache=0&sync_timestamp=1633673930154&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fcolorette%2Fdownload%2Fcolorette-2.0.16.tgz#713b9af84fdb000139f04546bd4a93f62a5085da"
-  integrity sha1-cTua+E/bAAE58EVGvUqT9ipQhdo=
+  resolved "https://registry.yarnpkg.com/colorette/-/colorette-2.0.16.tgz#713b9af84fdb000139f04546bd4a93f62a5085da"
+  integrity sha512-hUewv7oMjCp+wkBv5Rm0v87eJhq4woh5rSR+42YSQJKecCqgIqNkZ6lAlQms/BwHPJA5NKMRlpxPRv0n8HQW6g==
 
 commander@^2.20.0:
   version "2.20.3"
@@ -1478,7 +1471,7 @@ css-loader@^6.5.1:
     postcss-value-parser "^4.1.0"
     semver "^7.3.5"
 
-css-minimizer-webpack-plugin@*, css-minimizer-webpack-plugin@^3.2.0:
+css-minimizer-webpack-plugin@^3.2.0:
   version "3.2.0"
   resolved "https://registry.npmmirror.com/css-minimizer-webpack-plugin/download/css-minimizer-webpack-plugin-3.2.0.tgz#f59c56ec11137b37f000081bd19b450095094ad2"
   integrity sha512-5q4myvkmm29jRlI73Fl8Mc008i6o6hCEKnV6/fOrzRVDWD6EFGwDRX+SM2qCVeZ7XiztRDKHpTGDUeUMAOOagg==
@@ -4786,7 +4779,7 @@ schema-utils@^3.1.0, schema-utils@^3.1.1:
 
 schema-utils@^4.0.0:
   version "4.0.0"
-  resolved "https://registry.npmmirror.com/schema-utils/download/schema-utils-4.0.0.tgz?cache=0&sync_timestamp=1637075879557&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fschema-utils%2Fdownload%2Fschema-utils-4.0.0.tgz#60331e9e3ae78ec5d16353c467c34b3a0a1d3df7"
+  resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-4.0.0.tgz#60331e9e3ae78ec5d16353c467c34b3a0a1d3df7"
   integrity sha512-1edyXKgh6XnJsJSQ8mKWXnN/BVaIbFMLpouRUrXgVq7WYne5kw3MW7UPhO44uRXQSIpTSXoJbmrR2X0w9kUTyg==
   dependencies:
     "@types/json-schema" "^7.0.9"
@@ -5464,10 +5457,10 @@ wcwidth@^1.0.1:
   dependencies:
     defaults "^1.0.3"
 
-webpack-cli@^4.9.1:
+webpack-cli@4.9.1:
   version "4.9.1"
-  resolved "https://registry.npmmirror.com/webpack-cli/download/webpack-cli-4.9.1.tgz?cache=0&sync_timestamp=1636443621592&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fwebpack-cli%2Fdownload%2Fwebpack-cli-4.9.1.tgz#b64be825e2d1b130f285c314caa3b1ba9a4632b3"
-  integrity sha1-tkvoJeLRsTDyhcMUyqOxuppGMrM=
+  resolved "https://registry.yarnpkg.com/webpack-cli/-/webpack-cli-4.9.1.tgz#b64be825e2d1b130f285c314caa3b1ba9a4632b3"
+  integrity sha512-JYRFVuyFpzDxMDB+v/nanUdQYcZtqFPGzmlW4s+UkPMFhSpfRNmf1z4AwYcHJVdvEFAM7FFCQdNTpsBYhDLusQ==
   dependencies:
     "@discoveryjs/json-ext" "^0.5.0"
     "@webpack-cli/configtest" "^1.1.0"
@@ -5493,9 +5486,9 @@ webpack-dev-middleware@^5.2.1:
     range-parser "^1.2.1"
     schema-utils "^4.0.0"
 
-webpack-dev-server@^4.6.0:
+webpack-dev-server@4.6.0:
   version "4.6.0"
-  resolved "https://registry.npmmirror.com/webpack-dev-server/download/webpack-dev-server-4.6.0.tgz#e8648601c440172d9b6f248d28db98bed335315a"
+  resolved "https://registry.yarnpkg.com/webpack-dev-server/-/webpack-dev-server-4.6.0.tgz#e8648601c440172d9b6f248d28db98bed335315a"
   integrity sha512-oojcBIKvx3Ya7qs1/AVWHDgmP1Xml8rGsEBnSobxU/UJSX1xP1GPM3MwsAnDzvqcVmVki8tV7lbcsjEjk0PtYg==
   dependencies:
     ansi-html-community "^0.0.8"
@@ -5553,7 +5546,7 @@ webpack-sources@^3.2.2:
   resolved "https://registry.npmmirror.com/webpack-sources/download/webpack-sources-3.2.2.tgz?cache=0&sync_timestamp=1636982677879&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fwebpack-sources%2Fdownload%2Fwebpack-sources-3.2.2.tgz#d88e3741833efec57c4c789b6010db9977545260"
   integrity sha512-cp5qdmHnu5T8wRg2G3vZZHoJPN14aqQ89SyQ11NpGH5zEMDCclt49rzo+MaRazk7/UeILhAI+/sEtcM+7Fr0nw==
 
-webpack@*, webpack@^5.38.1, webpack@^5.65.0:
+webpack@*, webpack@5.65.0, webpack@^5.38.1:
   version "5.65.0"
   resolved "https://registry.npmmirror.com/webpack/download/webpack-5.65.0.tgz#ed2891d9145ba1f0d318e4ea4f89c3fa18e6f9be"
   integrity sha512-Q5or2o6EKs7+oKmJo7LaqZaMOlDWQse9Tm5l1WAfU/ujLGN5Pb0SqGeVkN/4bpPmEqEP5RnVhiqsOtWtUVwGRw==
@@ -5612,10 +5605,10 @@ webpack@^5:
     watchpack "^2.0.0"
     webpack-sources "^2.1.1"
 
-webpackbar@5.0.2:
+webpackbar@^5.0.2:
   version "5.0.2"
-  resolved "https://registry.npmmirror.com/webpackbar/download/webpackbar-5.0.2.tgz#d3dd466211c73852741dfc842b7556dcbc2b0570"
-  integrity sha1-091GYhHHOFJ0HfyEK3VW3LwrBXA=
+  resolved "https://registry.yarnpkg.com/webpackbar/-/webpackbar-5.0.2.tgz#d3dd466211c73852741dfc842b7556dcbc2b0570"
+  integrity sha512-BmFJo7veBDgQzfWXl/wwYXr/VFus0614qZ8i9znqcl9fnEdiVkdbi0TedLQ6xAK92HZHDJ0QmyQ0fmuZPAgCYQ==
   dependencies:
     chalk "^4.1.0"
     consola "^2.15.3"

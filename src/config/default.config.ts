@@ -11,12 +11,20 @@ export function assignDefaultConfig(userConfig: ReactTsConfigPartial): ReactTsCo
     projectTitle,
     port: 18081,
     dist: path.resolve(rootPath, 'dist'),
-    host: 'localhost',
+    host: '0.0.0.0',
 
     devServerOptions: {
+      client: {
+        // noInfo: true,
+        logging: 'warn',
+        overlay: true,
+        progress: true,
+      },
+      historyApiFallback: true,
+      compress: true,
       allowedHosts: 'all',
       devMiddleware: {
-        publicPath: '/',
+        publicPath: '',
       },
     },
 

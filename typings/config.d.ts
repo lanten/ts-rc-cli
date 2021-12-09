@@ -9,13 +9,15 @@ export type ModuleFederationPluginOptions = ConstructorParameters<
   typeof webpack.container.ModuleFederationPlugin
 >[0]
 
-export declare interface EnvVariables {
+export declare interface EnvVariables<BUILD_ENV = string> {
+  /** Node 启动参数 */
+  NODE_ENV?: 'development' | 'production'
+  /** 构建参数 */
+  BUILD_ENV?: BUILD_ENV
   /** 项目名称 */
   PROJECT_NAME?: string
   /** 项目标题 */
   PROJECT_TITLE?: string
-  /** api 请求地址 */
-  API_BASE?: string
 }
 
 export declare interface EnvOptions<V = EnvVariables> {

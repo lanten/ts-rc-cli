@@ -52,6 +52,10 @@ async function chooseTemplate() {
     `${renderText('Ver            ')}: ${renderText(packageJSON.version, '#66ACEF')}`,
     `${renderText('Ver.Typescript ')}: ${renderText(packageJSON.peerDependencies.typescript, '#66ACEF')}`,
     `${renderText('Ver.Webpack    ')}: ${renderText(packageJSON.dependencies.webpack, '#66ACEF')}`,
+    `${renderText('Ver.WDS        ')}: ${renderText(
+      packageJSON.dependencies['webpack-dev-server'],
+      '#66ACEF'
+    )}`,
     splitLine,
   ]
 
