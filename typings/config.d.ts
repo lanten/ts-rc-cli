@@ -92,6 +92,7 @@ export declare interface ReactTsConfig<V = EnvVariables> {
   moduleFederationOptions?: ModuleFederationPluginOptions
   eslintOptions?: ESLintOptions
   lessOptions?: any
+  sassOptions?: any
 }
 
 export type ReactTsConfigPartial<T = EnvVariables> = Partial<ReactTsConfig<T>>

@@ -27,6 +27,7 @@ const {
   moduleFederationOptions,
   eslintOptions,
   lessOptions,
+  sassOptions,
 } = reactTsConfig
 const { NODE_ENV, BUILD_ENV = 'dev' } = process.env
 const ENV_CONFIG = env[BUILD_ENV]
@@ -59,6 +60,7 @@ if (NODE_ENV === 'development') {
 let webpackConfig: Configuration = {
   mode: NODE_ENV as 'development' | 'production',
   target: 'web',
+  devtool: 'eval-source-map',
 
   entry,
 
@@ -104,6 +106,7 @@ let webpackConfig: Configuration = {
           ...styleLoader,
           {
             loader: 'sass-loader',
+            options: sassOptions,
           },
         ],
       },
