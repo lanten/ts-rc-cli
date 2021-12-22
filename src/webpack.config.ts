@@ -60,7 +60,6 @@ if (NODE_ENV === 'development') {
 let webpackConfig: Configuration = {
   mode: NODE_ENV as 'development' | 'production',
   target: 'web',
-  devtool: 'eval-source-map',
 
   entry,
 
@@ -159,6 +158,7 @@ if (moduleFederationOptions) {
 
 // 开发环境配置
 if (NODE_ENV === 'development') {
+  webpackConfig.devtool = 'eval-source-map'
   // webpackConfig.plugins?.push(new webpack.HotModuleReplacementPlugin(), new webpack.NoEmitOnErrorsPlugin())
   // 生产环境配置
 } else if (NODE_ENV === 'production') {
