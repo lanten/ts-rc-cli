@@ -32,55 +32,23 @@ devServerOptions.host = host
 devServerOptions.port = port
 devServerOptions.proxy = proxy
 
-// const devServerOptions: WebpackDevServer.Configuration = {
-//   host,
-//   port,
-//   proxy,
-//   client: {
-//     // noInfo: true,
-//     logging: 'warn',
-//     overlay: true,
-//     progress: true,
-//   },
-//   historyApiFallback: true,
-//   compress: true,
-//   ...devServerOptionsUser,
-// }
-
 function startRenderer(): Promise<webpack.Stats> {
   return new Promise((resolve) => {
     process.env.port = String(port)
     process.env.host = host
-
-    // start - 多入口加载热更新 -----------------------------------------------------------------
-    // const hotClient = ['webpack-dev-server/client', 'webpack/hot/only-dev-server']
-    // if (typeof webpackConfig.entry === 'object') {
-    //   Object.keys(webpackConfig.entry).forEach((name) => {
-    //     if (!webpackConfig.entry) throw new Error('webpackConfig.entry')
-    //     const value = webpackConfig.entry[name]
-    //     if (Array.isArray(value)) {
-    //       value.unshift(...hotClient)
-    //     } else {
-    //       webpackConfig.entry[name] = [...hotClient, value]
-    //     }
-    //   })
-    // } else {
-    //   webpackConfig.entry = [...hotClient, webpackConfig.entry] as string[]
-    // }
-    // end -------------------------------------------------------------------------------------
-
-    // WebpackDevServer.addDevServerEntrypoints(webpackConfig, devServerOptions)
 
     webpackConfig.infrastructureLogging = {
       level: 'warn',
       appendOnly: true,
     }
 
-    webpackConfig.stats = false
+    webpackConfig.stats = 'errors-warnings'
 
     const rendererCompiler = webpack(webpackConfig)
     rendererCompiler.hooks.done.tap('done', (stats) => {
-      const { devMiddleware: { publicPath = '' } = {} } = devServerOptions
+      const publicPath = (devServerOptions.devMiddleware?.publicPath ||
+        webpackConfig.output?.publicPath ||
+        '') as string
       const isAbs = /^https?.+$/.test(publicPath)
       const localUrl = isAbs
         ? publicPath
