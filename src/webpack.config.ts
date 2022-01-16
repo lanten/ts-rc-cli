@@ -39,9 +39,9 @@ const tsLoader: webpack.RuleSetUseItem = {
     getCustomTransformers: (): any => ({
       before: [tsImportPluginFactory(/** options */)],
     }),
-    compilerOptions: {
-      module: 'es2015',
-    },
+    // compilerOptions: {
+    //   module: 'es2015',
+    // },
   },
 }
 
