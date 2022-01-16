@@ -47,6 +47,8 @@ export function assignDefaultConfig(userConfig: ReactTsConfigPartial): ReactTsCo
     proxy: {},
 
     COMMON_ENV: {
+      BUILD_ENV: process.env.BUILD_ENV,
+      NODE_ENV: process.env.NODE_ENV as any,
       PROJECT_NAME: projectName,
       PROJECT_TITLE: projectTitle,
     },
